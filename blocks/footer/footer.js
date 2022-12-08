@@ -1,53 +1,11 @@
-function getTemplate() {
-  return `
-  <div class="footer-container">
-    <div class="brand">
-      <a href="<%= logo.href; %>" target="_blank" rel="noopener">
-        <img src="<%= logo.src; %>" alt="<%= logo.alt; %>">
-      </a>
-    </div>
-    <nav>
-      <ul class="nav-lists">
-        <% navLists.forEach((navList) => { %>
-        <li class="nav-list">
-          <span class="nav-list-heading"><%= navList.heading; %></span>
-          <ul class="nav-sublist">
-          <% navList.items.forEach((navItem) => { %>
-            <li class="nav-item">
-              <a href="<%= navItem.href; %>" target="_blank" rel="noopener">
-                <%- navItem.image; %>
-                <%= navItem.name; %>
-              </a>
-            </li>
-          <% }); %>
-          </ul>
-        </li>
-        <% }); %>
-        <li class="nav-list nav-privacy">
-          <span class="nav-list-heading">Privacy & Use</span>
-          <ul class="nav-sublist">
-            <% privacyLinks.forEach((privacyLink) => { %>
-            <li class="nav-item">
-              <a href="<%= privacyLink.href; %>" target="_blank" rel="noopener"><%= privacyLink.name; %></a>
-            </li>
-            <% }); %>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-    <div class="social-links">
-      <p class="copyright"><%= copyrightText; %></p>
-      <div class="social-container">
-        <% socialLinks.forEach((link) => { %>
-        <a target="_blank" rel="noopener" href="<%= link.href; %>">
-          <%- link.icon; %>
-        </a>
-        <% }); %>
-      </div>
-    </div>
-    <p class="legal"><%= legalText; %></p>
-  </div>
-  `;
+async function getTemplate() {
+  const resp = await fetch(`${window.hlx.codeBasePath}/blocks/footer/footer.ejs`);
+  if (resp.ok) {
+    const html = await resp.text();
+    return html;
+  }
+
+  return '';
 }
 
 function decorateLogo(logo, container) {
@@ -192,7 +150,8 @@ export default async function decorateEjs(block) {
     copyrightText: copyRightText.innerText,
     legalText: trademarksText.innerText,
   };
-  block.innerHTML = ejs.render(getTemplate(), data);
+  const templateStr = await getTemplate();
+  block.innerHTML = ejs.render(templateStr, data);
   block.classList.add('appear');
 }
 
