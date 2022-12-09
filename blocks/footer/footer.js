@@ -1,3 +1,4 @@
+/* global ejs */
 async function getTemplate() {
   const resp = await fetch(`${window.hlx.codeBasePath}/blocks/footer/footer.ejs`);
   if (resp.ok) {
@@ -152,6 +153,13 @@ export default async function decorateEjs(block) {
   };
   const templateStr = await getTemplate();
   block.innerHTML = ejs.render(templateStr, data);
+
+  block.querySelectorAll('.nav-list').forEach((li) => {
+    li.addEventListener('click', () => {
+      li.classList.toggle('active');
+    });
+  });
+
   block.classList.add('appear');
 }
 
