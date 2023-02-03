@@ -2,6 +2,7 @@ import {
   sampleRUM,
   buildBlock,
   loadBlock,
+  createOptimizedPicture,
   decorateButtons,
   decorateIcons,
   decorateSections,
@@ -11,6 +12,8 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
+  toClassName,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['carousel', 'hero']; // add your LCP blocks to the list
@@ -130,6 +133,16 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateLinkedPictures(main);
+
+  const sections = [...main.querySelectorAll('.section')];
+  sections.forEach((section) => {
+    const bg = section.dataset.background;
+    if (bg) {
+      const picture = createOptimizedPicture(bg);
+      picture.classList.add('section-background');
+      section.prepend(picture);
+    }
+  });
 }
 
 /**
@@ -138,6 +151,10 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  const theme = getMetadata('theme');
+  if (theme && toClassName(theme) === 'genesis') {
+    loadCSS(`${window.hlx.codeBasePath}/themes/${toClassName(theme)}.css`);
+  }
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

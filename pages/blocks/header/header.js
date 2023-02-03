@@ -374,6 +374,7 @@ export default async function decorate(block) {
   const logo = block.querySelector('a > img');
   decorateLogo(logo, container);
   logo.closest('a').remove();
+
   const remainingNavLinks = block.querySelectorAll('a');
 
   const navLinks = [];
@@ -392,15 +393,19 @@ export default async function decorate(block) {
     }
   });
 
-  const moreLinks = buildMoreLinks(moreLink);
-
   block.innerHTML = '';
-  decorateNav(navLinks, moreLinks, container);
-  decorateUserActions(container);
-  block.append(buildNavDialog(container.querySelector('.primary-navigation-list').cloneNode(true)));
-  block.append(buildToursDialog(tourLinks));
-  block.append(buildSignInDialog());
-  block.append(buildSignUpDialog());
+
+  const bodyClasses = [...document.body.classList];
+  const isGenesis = bodyClasses.includes('genesis');
+  if (!isGenesis) {
+    const moreLinks = buildMoreLinks(moreLink);
+    decorateNav(navLinks, moreLinks, container);
+    decorateUserActions(container);
+    block.append(buildNavDialog(container.querySelector('.primary-navigation-list').cloneNode(true)));
+    block.append(buildToursDialog(tourLinks));
+    block.append(buildSignInDialog());
+    block.append(buildSignUpDialog());
+  }
 
   block.append(container);
 

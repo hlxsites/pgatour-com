@@ -1,0 +1,55 @@
+main .blockquote figure {
+  display: flex;
+  flex-direction: column;
+  margin: 0 32px;
+}
+
+main .blockquote blockquote {
+  width: 100%;
+  margin: 0;
+  font-size: var(--heading-font-size-m);
+  font-weight: bold;
+  line-height: var(--heading-line-height-m);
+}
+
+@media (min-width: 600px) {
+  main .blockquote blockquote {
+    font-size: var(--heading-font-size-l);
+    line-height: var(--heading-line-height-l);
+  }
+}
+
+main .blockquote blockquote.blockquote-with-source p:first-of-type {
+  text-indent: -1ch;
+}
+
+main .blockquote blockquote.blockquote-with-source p:first-of-type::before,
+main .blockquote blockquote.blockquote-with-source p:last-of-type::after {
+  line-height: 0;
+  vertical-align: .2em;
+}
+
+main .blockquote blockquote.blockquote-with-source p:first-of-type::before {
+  content: '“';
+}
+
+main .blockquote blockquote.blockquote-with-source p:last-of-type::after {
+  content: '”';
+}
+
+main .blockquote figcaption {
+  align-self: flex-end;
+  font-style: italic;
+  text-align: right;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .blockquote figcaption p:first-of-type {
+  text-indent: -1ch;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .blockquote figcaption p:first-of-type::before {
+  content: '- ';
+  line-height: 0;
+}

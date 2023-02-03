@@ -173,6 +173,7 @@ footer .footer .social-links .copyright {
 
 footer .footer .social-links .social-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
   grid-area: social;

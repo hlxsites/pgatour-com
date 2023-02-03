@@ -1,0 +1,108 @@
+.genesis main {
+  --color-gray: #2c2c2c;
+  --text-color: var(--color-gray);
+}
+
+/* HERO */
+.genesis main .hero-wrapper {
+  max-width: unset;
+}
+
+.genesis main .hero {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
+  background-image: linear-gradient(transparent 66%, var(--background-color));
+  fill: var(--color-gray);
+  color: var(--color-gray);
+  text-transform: uppercase;
+}
+
+.genesis main .hero svg {
+  height: auto;
+  width: 140px;
+}
+
+.genesis main .hero img {
+  object-position: 66% 50%;
+}
+
+.genesis main .hero h1 {
+  font-size: min(78px, 11vw);
+  font-weight: 700;
+  text-shadow: unset;
+}
+
+.genesis main .hero p {
+  margin: 0;
+  margin-top: 1rem;
+  letter-spacing: .1em;
+  font-size: min(var(--body-font-size-xs), 10vw);
+  font-weight: 500;
+  text-shadow: unset;
+}
+
+.genesis main .hero p:last-of-type {
+  margin-top: calc(var(--body-font-size-xs) * -1);
+}
+
+.genesis main .hero h1 + p:not(.button-container) {
+  display: initial;
+  visibility: visible;
+  font-size: min(var(--body-font-size-xl), 5vw);
+  text-shadow: none;
+}
+
+.genesis main .hero > div {
+  align-self: center;
+}
+
+.genesis main .hero > div > div {
+  height: unset;
+  max-width: unset;
+  padding-top: unset;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+/* BLOCKQUOTE */
+.genesis main [data-section-status='loaded'].blockquote-container {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.genesis main [data-section-status='loaded'].blockquote-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: block;
+  height: 2px;
+  background-color: currentcolor;
+  width: 100%;
+}
+
+.genesis main .blockquote-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.genesis main .blockquote figure {
+  border: 2px solid;
+  padding: 0 32px;
+}
+
+.genesis main .blockquote figure {
+  background-color: var(--background-color);
+}
+
+.genesis main .shadow .blockquote figure {
+  background-color: var(--text-color);
+}
+
+.genesis main .blockquote blockquote {
+  text-align: center;
+}
