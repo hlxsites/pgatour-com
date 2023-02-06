@@ -54,18 +54,20 @@ main .reveal .reveal-copy div {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  gap: 32px;
+  gap: 100vh;
   position: relative;
   max-width: 600px;
   min-height: 100vh;
   margin: auto;
-  padding: 32px;
+  padding: 100vh 32px;
 }
 
-main .reveal .reveal-copy .reveal-video-copy {
-  min-height: 150vh;
-  padding-top: 50vh;
+main .reveal .reveal-copy div:last-of-type {
+  padding-bottom: 50vh;
+}
+
+main .reveal .reveal-copy div:not(:first-of-type) {
+  padding-top: 100vh;
 }
 
 main .reveal .reveal-copy div > * {
@@ -74,17 +76,3 @@ main .reveal .reveal-copy div > * {
   background-color: var(--color-black-75);
   color: var(--color-white);
 }
-
-main .reveal .reveal-copy div:first-of-type {
-  justify-content: flex-start;
-  margin-top: 50vh;
-}
-
-main .reveal .reveal-copy div:first-of-type[data-length="2"] > *:not(:first-child) {
-  margin-top: 100%;
-}
-
-main .reveal .reveal-copy div:first-of-type[data-length="3"] > *:not(:first-child) {
-  margin-top: 50%;
-}
-
