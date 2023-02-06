@@ -396,8 +396,8 @@ export default async function decorate(block) {
   block.innerHTML = '';
 
   const bodyClasses = [...document.body.classList];
-  const isGenesis = bodyClasses.includes('genesis');
-  if (!isGenesis) {
+  const isStory = bodyClasses.includes('story');
+  if (!isStory) {
     const moreLinks = buildMoreLinks(moreLink);
     decorateNav(navLinks, moreLinks, container);
     decorateUserActions(container);

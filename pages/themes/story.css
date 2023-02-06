@@ -1,14 +1,14 @@
-.genesis main {
+.story main {
   --color-gray: #2c2c2c;
   --text-color: var(--color-gray);
 }
 
 /* HERO */
-.genesis main .hero-wrapper {
+.story main .hero-wrapper {
   max-width: unset;
 }
 
-.genesis main .hero {
+.story main .hero {
   display: grid;
   grid-template-rows: 1fr 1fr;
   height: 100vh;
@@ -18,22 +18,22 @@
   text-transform: uppercase;
 }
 
-.genesis main .hero svg {
+.story main .hero svg {
   height: auto;
   width: 140px;
 }
 
-.genesis main .hero img {
+.story main .hero img {
   object-position: 66% 50%;
 }
 
-.genesis main .hero h1 {
+.story main .hero h1 {
   font-size: min(78px, 11vw);
   font-weight: 700;
   text-shadow: unset;
 }
 
-.genesis main .hero p {
+.story main .hero p {
   margin: 0;
   margin-top: 1rem;
   letter-spacing: .1em;
@@ -42,22 +42,22 @@
   text-shadow: unset;
 }
 
-.genesis main .hero p:last-of-type {
+.story main .hero p:last-of-type {
   margin-top: calc(var(--body-font-size-xs) * -1);
 }
 
-.genesis main .hero h1 + p:not(.button-container) {
+.story main .hero h1 + p:not(.button-container) {
   display: initial;
   visibility: visible;
   font-size: min(var(--body-font-size-xl), 5vw);
   text-shadow: none;
 }
 
-.genesis main .hero > div {
+.story main .hero > div {
   align-self: center;
 }
 
-.genesis main .hero > div > div {
+.story main .hero > div > div {
   height: unset;
   max-width: unset;
   padding-top: unset;
@@ -66,14 +66,14 @@
 }
 
 /* BLOCKQUOTE */
-.genesis main [data-section-status='loaded'].blockquote-container {
+.story main [data-section-status='loaded'].blockquote-container {
   position: relative;
   height: 100vh;
   display: flex;
   align-items: center;
 }
 
-.genesis main [data-section-status='loaded'].blockquote-container::after {
+.story main [data-section-status='loaded'].blockquote-container::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -85,24 +85,24 @@
   width: 100%;
 }
 
-.genesis main .blockquote-wrapper {
+.story main .blockquote-wrapper {
   position: relative;
   z-index: 1;
 }
 
-.genesis main .blockquote figure {
+.story main .blockquote figure {
   border: 2px solid;
   padding: 0 32px;
 }
 
-.genesis main .blockquote figure {
+.story main .blockquote figure {
   background-color: var(--background-color);
 }
 
-.genesis main .shadow .blockquote figure {
+.story main .shadow .blockquote figure {
   background-color: var(--text-color);
 }
 
-.genesis main .blockquote blockquote {
+.story main .blockquote blockquote {
   text-align: center;
 }

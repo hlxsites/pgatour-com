@@ -152,7 +152,7 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const theme = getMetadata('theme');
-  if (theme && toClassName(theme) === 'genesis') {
+  if (theme && toClassName(theme) === 'story') {
     loadCSS(`${window.hlx.codeBasePath}/themes/${toClassName(theme)}.css`);
   }
   const main = doc.querySelector('main');
