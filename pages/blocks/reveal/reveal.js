@@ -52,8 +52,10 @@ export default async function decorate(block) {
         matchingMedia.setAttribute('data-intersecting', true);
       } else {
         const previousMedia = mediaSlides[i - 1];
-        if (previousMedia) previousMedia.setAttribute('data-intersecting', true);
-        matchingMedia.removeAttribute('data-intersecting');
+        if (previousMedia) {
+          previousMedia.setAttribute('data-intersecting', true);
+          matchingMedia.removeAttribute('data-intersecting');
+        }
       }
     }, { threshold: 0 });
     textObserver.observe(text);
