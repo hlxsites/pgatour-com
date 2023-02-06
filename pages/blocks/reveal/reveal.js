@@ -43,27 +43,23 @@ export default async function decorate(block) {
       text.innerHTML = `<p>${text.innerHTML}</p>`;
     }
 
-    let prevRatio = 0;
-    let moreVisible = null;
     const textObserver = new IntersectionObserver(async (entries) => {
       const observed = entries.find((entry) => entry.isIntersecting);
+      const mediaSlides = [...media.children];
+      const matchingMedia = mediaSlides[i];
       if (observed) {
-        const mediaSlides = [...media.children];
-        moreVisible = observed.intersectionRatio > prevRatio;
-        prevRatio = observed.intersectionRatio;
-        if (moreVisible) {
-          mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
-          mediaSlides[i].setAttribute('data-intersecting', true);
-        } else if (i && i !== mediaSlides.length - 1) {
-          mediaSlides[i].removeAttribute('data-intersecting');
-          mediaSlides[i - 1].setAttribute('data-intersecting', true);
-        }
+        mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
+        matchingMedia.setAttribute('data-intersecting', true);
       } else {
-        prevRatio = 0;
-        moreVisible = false;
+        const previousMedia = mediaSlides[i - 1];
+        if (previousMedia) previousMedia.setAttribute('data-intersecting', true);
+        matchingMedia.removeAttribute('data-intersecting');
       }
-    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] });
+    }, { threshold: 0 });
     textObserver.observe(text);
+    window.addEventListener('scroll', () => {
+      textObserver.observe(text);
+    });
     copy.append(text);
   });
 
