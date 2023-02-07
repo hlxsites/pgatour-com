@@ -3,6 +3,8 @@ export default async function decorate(block) {
   media.classList.add('reveal-media');
   const copy = document.createElement('div');
   copy.classList.add('reveal-copy');
+  let lastTop = 0;
+  let scrollDown = null;
 
   [...block.children].forEach((row, i) => {
     const [img, text] = [...row.children];
@@ -51,18 +53,24 @@ export default async function decorate(block) {
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
       } else {
+        matchingMedia.removeAttribute('data-intersecting');
         const previousMedia = mediaSlides[i - 1];
-        if (previousMedia) {
+        const nextMedia = mediaSlides[i + 1];
+        if (scrollDown && nextMedia) {
+          nextMedia.setAttribute('data-intersecting', true);
+        } else if (!scrollDown && previousMedia) {
           previousMedia.setAttribute('data-intersecting', true);
-          matchingMedia.removeAttribute('data-intersecting');
         }
       }
     }, { threshold: 0 });
     textObserver.observe(text);
-    window.addEventListener('scroll', () => {
-      textObserver.observe(text);
-    });
     copy.append(text);
+  });
+
+  window.addEventListener('scroll', () => {
+    const top = window.pageYOffset || document.documentElement.scrollTop;
+    scrollDown = top >= lastTop;
+    lastTop = top <= 0 ? 0 : top;
   });
 
   block.innerHTML = '';
