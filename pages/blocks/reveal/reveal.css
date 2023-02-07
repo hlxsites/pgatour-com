@@ -27,6 +27,47 @@ main .reveal video {
   object-fit: cover;
 }
 
+/* IMG POSITIONING */
+main .reveal .focus-top img,
+main .reveal video {
+  object-position: top;
+}
+
+main .reveal .focus-left img,
+main .reveal video {
+  object-position: 20%;
+}
+
+main .reveal .focus-bottom img,
+main .reveal video {
+  object-position: bottom;
+}
+
+main .reveal .focus-right img,
+main .reveal video {
+  object-position: 80%;
+}
+
+main .reveal .focus-top-left img,
+main .reveal video {
+  object-position: 20% top;
+}
+
+main .reveal .focus-top-right img,
+main .reveal video {
+  object-position: 80% top;
+}
+
+main .reveal .focus-bottom-left img,
+main .reveal video {
+  object-position: 20% bottom;
+}
+
+main .reveal .focus-bottom-right img,
+main .reveal video {
+  object-position: 80% bottom;
+}
+
 /* MEDIA */
 main .reveal .reveal-media {
   position: sticky;
