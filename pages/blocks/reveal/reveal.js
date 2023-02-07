@@ -1,3 +1,5 @@
+import { toClassName } from '../../scripts/lib-franklin.js';
+
 export default async function decorate(block) {
   const media = document.createElement('div');
   media.classList.add('reveal-media');
@@ -14,8 +16,8 @@ export default async function decorate(block) {
     const [img, text] = [...row.children];
     if (!i) img.setAttribute('data-intersecting', true);
     [...img.children].forEach((child) => {
+      // transform videos
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
-        // transform video
         const a = child.querySelector('a[href]') || child;
         const video = document.createElement('p');
         video.className = 'video-wrapper';
@@ -39,6 +41,14 @@ export default async function decorate(block) {
           }
         }, { threshold: 0 });
         videoObserver.observe(video);
+      }
+      // apply focus direction
+      if (child.querySelector('strong')) {
+        const strong = child.querySelector('strong');
+        const direction = toClassName(strong.textContent);
+        img.classList.add(`focus-${direction}`);
+        if (strong.parentElement.nodeName === 'P') strong.parentElement.remove();
+        else strong.remove();
       }
     });
     img.classList.remove('button-container');
