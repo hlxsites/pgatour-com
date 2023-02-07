@@ -3,10 +3,14 @@ export default async function decorate(block) {
   media.classList.add('reveal-media');
   const copy = document.createElement('div');
   copy.classList.add('reveal-copy');
+  const rows = [...block.children];
+  block.innerHTML = '';
+  block.append(media, copy);
+
   let lastTop = 0;
   let scrollDown = null;
 
-  [...block.children].forEach((row, i) => {
+  rows.forEach((row, i) => {
     const [img, text] = [...row.children];
     if (!i) img.setAttribute('data-intersecting', true);
     [...img.children].forEach((child) => {
@@ -72,7 +76,4 @@ export default async function decorate(block) {
     scrollDown = top >= lastTop;
     lastTop = top <= 0 ? 0 : top;
   });
-
-  block.innerHTML = '';
-  block.append(media, copy);
 }
