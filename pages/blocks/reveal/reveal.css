@@ -62,14 +62,6 @@ main .reveal .reveal-copy div {
   padding: 100vh 32px;
 }
 
-main .reveal .reveal-copy div:last-of-type {
-  padding-bottom: 50vh;
-}
-
-main .reveal .reveal-copy div:not(:first-of-type) {
-  padding-top: 100vh;
-}
-
 main .reveal .reveal-copy div > * {
   margin: 0;
   padding: 32px;
