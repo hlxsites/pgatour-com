@@ -21,6 +21,7 @@
 .story main .hero svg {
   height: auto;
   width: 140px;
+  padding: 6px 0;
 }
 
 .story main .hero img {
