@@ -27,6 +27,47 @@ main .reveal video {
   object-fit: cover;
 }
 
+/* IMG POSITIONING */
+main .reveal .focus-top img,
+main .reveal .focus-top video {
+  object-position: top;
+}
+
+main .reveal .focus-left img,
+main .reveal .focus-left video {
+  object-position: 20%;
+}
+
+main .reveal .focus-bottom img,
+main .reveal .focus-bototm video {
+  object-position: bottom;
+}
+
+main .reveal .focus-right img,
+main .reveal .focus-right video {
+  object-position: 80%;
+}
+
+main .reveal .focus-top-left img,
+main .reveal .focus-top-left video {
+  object-position: 20% top;
+}
+
+main .reveal .focus-top-right img,
+main .reveal .focus-top-right video {
+  object-position: 80% top;
+}
+
+main .reveal .focus-bottom-left img,
+main .reveal .focus-bottom-left video {
+  object-position: 20% bottom;
+}
+
+main .reveal .focus-bottom-right img,
+main .reveal .focus-bottom-right video {
+  object-position: 80% bottom;
+}
+
 /* MEDIA */
 main .reveal .reveal-media {
   position: sticky;
@@ -60,14 +101,6 @@ main .reveal .reveal-copy div {
   min-height: 100vh;
   margin: auto;
   padding: 100vh 32px;
-}
-
-main .reveal .reveal-copy div:last-of-type {
-  padding-bottom: 50vh;
-}
-
-main .reveal .reveal-copy div:not(:first-of-type) {
-  padding-top: 100vh;
 }
 
 main .reveal .reveal-copy div > * {
