@@ -43,7 +43,7 @@ export default async function decorate(block) {
       } else {
         const image = child.querySelector('img');
         if (image) {
-          image.closest('picture').replaceWith(createOptimizedPicture(image.src, image.alt, false, [{ media: '(min-width: 900px)', width: '750' }, { width: '1500' }]));
+          image.closest('picture').replaceWith(createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]));
         }
       }
       // apply focus direction
