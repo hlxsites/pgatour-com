@@ -84,6 +84,23 @@ main .reveal .reveal-media div[data-intersecting=true] {
   opacity: 1;
 }
 
+main .reveal .reveal-media video[data-orientation='landscape'] {
+  display: none;
+  visibility: hidden;
+}
+
+@media (min-width: 900px) {
+  main .reveal .reveal-media video[data-orientation='portrait'] {
+    display: none;
+    visibility: hidden;
+  }
+
+  main .reveal .reveal-media video[data-orientation='landscape'] {
+    display: unset;
+    visibility: visible;
+  }
+}
+
 /* COPY */
 main .reveal .reveal-copy {
   position: relative;

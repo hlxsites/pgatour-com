@@ -1,4 +1,4 @@
-import { toClassName } from '../../scripts/lib-franklin.js';
+import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
   const media = document.createElement('div');
@@ -19,28 +19,32 @@ export default async function decorate(block) {
       // transform videos
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         const a = child.querySelector('a[href]') || child;
-        const video = document.createElement('p');
-        video.className = 'video-wrapper';
-        video.innerHTML = `<video loop muted playsInline>
+        const videoWrapper = document.createElement('p');
+        videoWrapper.className = 'video-wrapper';
+        videoWrapper.innerHTML = `<video loop muted playsInline>
           <source data-src="${a.href}" type="video/mp4" />
         </video>`;
-        child.replaceWith(video);
-
+        child.replaceWith(videoWrapper);
+        const video = videoWrapper.querySelector('video');
+        const source = videoWrapper.querySelector('source');
         const videoObserver = new IntersectionObserver(async (entries) => {
           const observed = entries.find((entry) => entry.isIntersecting);
-          const vid = video.querySelector('video');
           if (observed) {
-            const source = video.querySelector('source');
             if (!source.hasAttribute('src')) {
               source.src = source.dataset.src;
-              vid.load();
+              video.load();
             }
-            vid.play();
+            video.play();
           } else {
-            vid.pause();
+            video.pause();
           }
         }, { threshold: 0 });
-        videoObserver.observe(video);
+        videoObserver.observe(videoWrapper);
+      } else {
+        const image = child.querySelector('img');
+        if (image) {
+          image.closest('picture').replaceWith(createOptimizedPicture(image.src, image.alt, false, [{ media: '(min-width: 900px)', width: '750' }, { width: '1500' }]));
+        }
       }
       // apply focus direction
       if (child.querySelector('strong')) {
@@ -52,6 +56,14 @@ export default async function decorate(block) {
       }
     });
     img.classList.remove('button-container');
+    // set video orientations
+    const allVideos = img.querySelectorAll('video');
+    if (allVideos && allVideos.length > 1) {
+      const videoTypes = ['landscape', 'portrait'];
+      allVideos.forEach((video, j) => {
+        if (videoTypes[j]) video.dataset.orientation = videoTypes[j];
+      });
+    }
     media.append(img);
 
     // copy/text setup
