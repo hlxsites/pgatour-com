@@ -21,22 +21,16 @@ export default async function decorate(block) {
         const a = child.querySelector('a[href]') || child;
         const videoWrapper = document.createElement('p');
         videoWrapper.className = 'video-wrapper';
-        videoWrapper.innerHTML = `<video loop muted playsInline>
+        videoWrapper.innerHTML = `<video loop muted playsInline data-loaded="false">
           <source data-src="${a.href}" type="video/mp4" />
         </video>`;
         child.replaceWith(videoWrapper);
-        const video = videoWrapper.querySelector('video');
         const source = videoWrapper.querySelector('source');
         const videoObserver = new IntersectionObserver(async (entries) => {
           const observed = entries.find((entry) => entry.isIntersecting);
           if (observed) {
-            if (!source.hasAttribute('src')) {
-              source.src = source.dataset.src;
-              video.load();
-            }
-            video.play();
-          } else {
-            video.pause();
+            videoObserver.disconnect();
+            source.src = source.dataset.src;
           }
         }, { threshold: 0 });
         videoObserver.observe(videoWrapper);
@@ -75,17 +69,38 @@ export default async function decorate(block) {
       const observed = entries.find((entry) => entry.isIntersecting);
       const mediaSlides = [...media.children];
       const matchingMedia = mediaSlides[i];
+      const matchingVideos = matchingMedia.querySelectorAll('video');
       if (observed) {
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
+        if (matchingVideos) {
+          matchingVideos.forEach((video) => {
+            video.load();
+            video.play();
+          });
+        }
       } else {
         matchingMedia.removeAttribute('data-intersecting');
         const previousMedia = mediaSlides[i - 1];
         const nextMedia = mediaSlides[i + 1];
         if (scrollDown && nextMedia) {
           nextMedia.setAttribute('data-intersecting', true);
+          const nextVideos = nextMedia.querySelectorAll('video');
+          if (nextVideos) {
+            nextVideos.forEach((video) => {
+              video.load();
+              video.play();
+            });
+          }
         } else if (!scrollDown && previousMedia) {
           previousMedia.setAttribute('data-intersecting', true);
+          const previousVideos = previousMedia.querySelectorAll('video');
+          if (previousVideos) {
+            previousVideos.forEach((video) => {
+              video.load();
+              video.play();
+            });
+          }
         }
       }
     }, { threshold: 0 });
