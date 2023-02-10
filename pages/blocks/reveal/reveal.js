@@ -16,8 +16,8 @@ export default async function decorate(block) {
     const [img, text] = [...row.children];
     if (!i) img.setAttribute('data-intersecting', true);
     [...img.children].forEach((child) => {
-      // transform videos
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
+        // transform videos
         const a = child.querySelector('a[href]') || child;
         const videoWrapper = document.createElement('p');
         videoWrapper.className = 'video-wrapper';
@@ -33,6 +33,9 @@ export default async function decorate(block) {
             if (!source.hasAttribute('src')) {
               source.src = source.dataset.src;
               video.load();
+              video.addEventListener('loadeddata', () => {
+                video.setAttribute('data-loaded', true);
+              });
             }
             video.play();
           } else {
@@ -41,9 +44,21 @@ export default async function decorate(block) {
         }, { threshold: 0 });
         videoObserver.observe(videoWrapper);
       } else {
+        // optimize images
         const image = child.querySelector('img');
         if (image) {
-          image.closest('picture').replaceWith(createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]));
+          // first image should be loaded eager
+          const optimized = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
+          image.closest('picture').replaceWith(optimized);
+          const imageObserver = new IntersectionObserver(async (entries) => {
+            const observed = entries.find((entry) => entry.isIntersecting);
+            if (observed) {
+              imageObserver.disconnect();
+              const observedImg = optimized.querySelector('img');
+              if (!observedImg.complete) observedImg.setAttribute('loading', 'eager');
+            }
+          }, { threshold: 0 });
+          imageObserver.observe(optimized);
         }
       }
       // apply focus direction
@@ -92,6 +107,12 @@ export default async function decorate(block) {
     textObserver.observe(text);
     copy.append(text);
   });
+
+  setTimeout(() => {
+    block.querySelectorAll('img').forEach((img) => {
+      if (!img.complete) img.setAttribute('loading', 'eager');
+    });
+  }, 4000);
 
   window.addEventListener('scroll', () => {
     const top = window.pageYOffset || document.documentElement.scrollTop;
