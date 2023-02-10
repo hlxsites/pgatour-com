@@ -3,6 +3,39 @@
   --text-color: var(--color-gray);
 }
 
+.story main [data-section-status='loaded']:not(.reveal-container):not(.hero-container) {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story main [data-section-status='loaded']:not(.reveal-container):not(.hero-container)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: block;
+  height: 2px;
+  background-color: currentcolor;
+  width: 100%;
+}
+
+.story main .default-content-wrapper {
+  position: relative;
+  z-index: 1;
+  border: 2px solid;
+  padding: 0 32px;
+  background-color: var(--background-color);
+  text-align: center;
+}
+
+.story main .shadow .default-content-wrapper {
+  background-color: var(--text-color);
+}
+
 /* HERO */
 .story main .hero-wrapper {
   max-width: unset;
@@ -67,25 +100,6 @@
 }
 
 /* BLOCKQUOTE */
-.story main [data-section-status='loaded'].blockquote-container {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-}
-
-.story main [data-section-status='loaded'].blockquote-container::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  display: block;
-  height: 2px;
-  background-color: currentcolor;
-  width: 100%;
-}
-
 .story main .blockquote-wrapper {
   position: relative;
   z-index: 1;
@@ -94,9 +108,6 @@
 .story main .blockquote figure {
   border: 2px solid;
   padding: 0 32px;
-}
-
-.story main .blockquote figure {
   background-color: var(--background-color);
 }
 
