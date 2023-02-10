@@ -84,6 +84,15 @@ main .reveal .reveal-media div[data-intersecting=true] {
   opacity: 1;
 }
 
+main .reveal .reveal-media video {
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+
+main .reveal .reveal-media video[data-loaded] {
+  opacity: 1;
+}
+
 main .reveal .reveal-media video[data-orientation='landscape'] {
   display: none;
   visibility: hidden;

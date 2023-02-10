@@ -15,9 +15,9 @@ export default async function decorate(block) {
   rows.forEach((row, i) => {
     const [img, text] = [...row.children];
     if (!i) img.setAttribute('data-intersecting', true);
-    [...img.children].forEach((child) => {
-      // transform videos
+    [...img.children].forEach((child, j) => {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
+        // transform videos
         const a = child.querySelector('a[href]') || child;
         const videoWrapper = document.createElement('p');
         videoWrapper.className = 'video-wrapper';
@@ -33,6 +33,9 @@ export default async function decorate(block) {
             if (!source.hasAttribute('src')) {
               source.src = source.dataset.src;
               video.load();
+              video.addEventListener('loadeddata', () => {
+                video.setAttribute('data-loaded', true);
+              });
             }
             video.play();
           } else {
@@ -41,9 +44,22 @@ export default async function decorate(block) {
         }, { threshold: 0 });
         videoObserver.observe(videoWrapper);
       } else {
+        // optimize images
         const image = child.querySelector('img');
         if (image) {
-          image.closest('picture').replaceWith(createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]));
+          // first image should be loaded eager
+          const optimized = createOptimizedPicture(image.src, image.alt, j === 0, [{ width: '2000' }]);
+          image.closest('picture').replaceWith(optimized);
+          if (j) {
+            const imageObserver = new IntersectionObserver(async (entries) => {
+              const observed = entries.find((entry) => entry.isIntersecting);
+              if (observed) {
+                imageObserver.disconnect();
+                optimized.querySelector('img').setAttribute('loading', 'eager');
+              }
+            }, { threshold: 0 });
+            imageObserver.observe(optimized);
+          }
         }
       }
       // apply focus direction
