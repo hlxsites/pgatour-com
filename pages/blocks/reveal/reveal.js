@@ -15,7 +15,7 @@ export default async function decorate(block) {
   rows.forEach((row, i) => {
     const [img, text] = [...row.children];
     if (!i) img.setAttribute('data-intersecting', true);
-    [...img.children].forEach((child, j) => {
+    [...img.children].forEach((child) => {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         // transform videos
         const a = child.querySelector('a[href]') || child;
@@ -48,18 +48,17 @@ export default async function decorate(block) {
         const image = child.querySelector('img');
         if (image) {
           // first image should be loaded eager
-          const optimized = createOptimizedPicture(image.src, image.alt, j === 0, [{ width: '2000' }]);
+          const optimized = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
           image.closest('picture').replaceWith(optimized);
-          if (j) {
-            const imageObserver = new IntersectionObserver(async (entries) => {
-              const observed = entries.find((entry) => entry.isIntersecting);
-              if (observed) {
-                imageObserver.disconnect();
-                optimized.querySelector('img').setAttribute('loading', 'eager');
-              }
-            }, { threshold: 0 });
-            imageObserver.observe(optimized);
-          }
+          const imageObserver = new IntersectionObserver(async (entries) => {
+            const observed = entries.find((entry) => entry.isIntersecting);
+            if (observed) {
+              imageObserver.disconnect();
+              const observedImg = optimized.querySelector('img');
+              if (!observedImg.complete) observedImg.setAttribute('loading', 'eager');
+            }
+          }, { threshold: 0 });
+          imageObserver.observe(optimized);
         }
       }
       // apply focus direction
@@ -108,6 +107,12 @@ export default async function decorate(block) {
     textObserver.observe(text);
     copy.append(text);
   });
+
+  setTimeout(() => {
+    block.querySelectorAll('img').forEach((img) => {
+      if (!img.complete) img.setAttribute('loading', 'eager');
+    });
+  }, 4000);
 
   window.addEventListener('scroll', () => {
     const top = window.pageYOffset || document.documentElement.scrollTop;
