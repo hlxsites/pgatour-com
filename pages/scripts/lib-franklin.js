@@ -152,13 +152,13 @@ export function decorateIcons(element = document) {
  * Gets placeholders object
  * @param {string} prefix
  */
-export async function fetchPlaceholders(prefix = 'default') {
+export async function fetchPlaceholders(prefix = 'pages') {
   window.placeholders = window.placeholders || {};
   const loaded = window.placeholders[`${prefix}-loaded`];
   if (!loaded) {
     window.placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
       try {
-        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
+        fetch(`${prefix === 'default' ? '/' : `/${prefix}`}/placeholders.json`)
           .then((resp) => resp.json())
           .then((json) => {
             const placeholders = {};

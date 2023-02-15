@@ -1,67 +1,136 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>Page not found</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PGATOUR.com - Page Not Found</title>
   <script type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Page not found">
-  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
+  <script src="/pages/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
   <script type="module">
-    import { sampleRUM } from '/scripts/lib-franklin.js';
+    import { sampleRUM } from '/pages/scripts/lib-franklin.js';
 
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
         if (origin === window.location.origin) {
           const backBtn = document.createElement('a');
-          backBtn.classList.add('button', 'error-button-back');
+          backBtn.className = 'button secondary';
           backBtn.href = pathname;
           backBtn.textContent = 'Go back';
-          backBtn.title = 'Go back';
-          const btnContainer = document.querySelector('.button-container');
-          btnContainer.append(backBtn);
+          document.querySelector('.button-container').append(backBtn);
         }
       }
+
       sampleRUM('404', { source: document.referrer, target: window.location.href });
     });
   </script>
-  <link rel="stylesheet" href="/styles/styles.css">
+  <link rel="stylesheet" href="/pages/styles/styles.css">
   <style>
     main.error {
-      min-height: calc(100vh - var(--nav-height));
       display: flex;
       align-items: center;
+      justify-content: center;
+      height: calc(100vh - var(--nav-height));
     }
 
-    main.error .error-number {
-      width: 100%;
+    main.error section.error {
+      text-align: center;
     }
 
-    main.error .error-number text {
-      font-family: var(--fixed-font-family);
+    main.error .error-title {
+      font-size: 4rem;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      line-height: 4.4rem;
+    }
+
+    main.error .error-title p {
+      margin: 16px 0;
+    }
+
+    main.error .error-subtitle {
+      display: none;
+      visibility: hidden;
+    }
+
+    main.error .error-message {
+      margin: 24px 0;
+      font-size: 1.5rem;
+      line-height: 2.4rem;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    main.error .error-message br {
+      display: none;
+    }
+
+    main.error .button-container {
+      flex-direction: column;
+      gap: 1.6rem;
+      margin: 32px 0;
+    }
+
+    main.error .button {
+      flex: unset;
+      margin: 0;
+      border-width: 1px;
+    }
+
+    @media (min-width: 768px) {
+      main.error .error-title p {
+        margin: 0;
+      }
+
+      main.error .error-subtitle {
+        display: unset;
+        visibility: visible;
+      }
+
+      main.error .error-message {
+        font-size: 1.7rem;
+        line-height: 2.6rem;
+      }
+
+      main.error .error-message br {
+        display: unset;
+      }
+
+      main.error .button-container {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      main.error .button {
+        width: max-content;
+      }
     }
   </style>
-  <link rel="stylesheet" href="/styles/lazy-styles.css">
+  <link rel="stylesheet" href="/pages/styles/lazy-styles.css">
 </head>
-
-<body>
+<body class="story">
   <header></header>
   <main class="error">
-    <div class="section">
-      <svg viewBox="1 0 38 18" class="error-number">
-        <text x="0" y="17">404</text>
-      </svg>
-      <h2 class="error-message">Page Not Found</h2>
-      <p class="button-container">
-        <a href="/" class="button secondary error-button-home">Go home</a>
-      </p>
+    <div>
+      <section class="error">
+        <div class="error-title">
+          <p>Page Not Found</p>
+          <p class="error-subtitle">Let's get you back in play</p>
+        </div>
+        <div class="error-message">
+          <p>The page you are looking for has either <br />been moved, deleted or simply does not exist</p>
+        </div>
+        <div class="button-container">
+          <a href="https://www.pgatour.com" class="button secondary">Homepage</a>
+          <a href="https://www.pgatour.com/leaderboard" class="button secondary">Leaderboard</a>
+        </div>
+      </section>
     </div>
   </main>
   <footer></footer>
 </body>
-
 </html>
