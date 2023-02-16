@@ -97,7 +97,7 @@ async function OptanonWrapper() {
     localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(adobeSettings));
   }
 
-  loadScript(`https://assets.adobedtm.com/d17bac9530d5/90b3c70cfef1/launch-1ca88359b76c${isProd ? '.min' : ''}.js`);
+  loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`);
 }
 
 const otId = placeholders.onetrustId;
