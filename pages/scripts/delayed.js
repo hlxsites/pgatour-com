@@ -28,29 +28,51 @@ window.pgatour.tracking = {
   },
 };
 
-const pageType = window.location.pathname === '/' ? 'homePage' : 'contentPage';
+function getPageName() {
+  return window.location.pathname.split('/')
+    .filter((subPath) => subPath !== '')
+    .join(':');
+}
 
-const pname = window.location.pathname.split('/').pop();
-window.pgatour.Omniture = {
-  properties: {
-    pageName: `pgatour:tournaments:the-players-championship:${pname}`,
-    eVar16: `pgatour:tournaments:the-players-championship:${pname}`,
-    prop18: pageType,
-    eVar1: 'pgatour',
-    prop1: 'pgatour',
-    prop2: 'r011',
-    eVar2: 'r011',
-    eVar6: window.location.href,
-  },
-  defineOmnitureVars: () => {
-    if (window.s) {
-      Object.assign(window.s, window.pgatour.Omniture.properties);
-    }
-  },
+function sendAnalyticsPageEvent() {
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const dl = window.adobeDataLayer;
+  dl.push({
+    pageName: getPageName(),
+    pageUrl: window.location.href,
+    siteSection: 'pages',
+    siteSubSection: '',
+    siteSubSection2: '',
+    gigyaID: '',
+    userLoggedIn: '',
+    tourName: 'pgatour',
+    tournamentID: '',
+    ipAddress: '127.0.0.1',
+    deviceType: 'Web',
+  });
+  // const pname = window.location.pathname.split('/').pop();
+  // window.pgatour.Omniture = {
+  //   properties: {
+  //     pageName: `pgatour:tournaments:the-players-championship:${pname}`,
+  //     eVar16: `pgatour:tournaments:the-players-championship:${pname}`,
+  //     prop18: pageType,
+  //     eVar1: 'pgatour',
+  //     prop1: 'pgatour',
+  //     prop2: 'r011',
+  //     eVar2: 'r011',
+  //     eVar6: window.location.href,
+  //   },
+  //   defineOmnitureVars: () => {
+  //     if (window.s) {
+  //       Object.assign(window.s, window.pgatour.Omniture.properties);
+  //     }
+  //   },
+  
+  // };
+  
+  // window.pgatour.docWrite = document.write.bind(document);
+}
 
-};
-
-window.pgatour.docWrite = document.write.bind(document);
 
 /* setup cookie preferences */
 function getCookie(cookieName) {
@@ -98,12 +120,15 @@ async function OptanonWrapper() {
   }
 
   loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`);
+  sendAnalyticsPageEvent();
 }
 
 const otId = placeholders.onetrustId;
 if (otId) {
   const cookieScript = loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js');
   cookieScript.setAttribute('data-domain-script', `${otId}${isProd ? '' : '-test'}`);
+  cookieScript.setAttribute('data-dlayer-name', 'adobeDataLayer');
+  cookieScript.setAttribute('data-nscript', 'beforeInteractive');
 
   window.OptanonWrapper = OptanonWrapper;
 
