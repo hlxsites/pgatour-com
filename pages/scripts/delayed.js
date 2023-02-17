@@ -34,6 +34,20 @@ function getPageName() {
     .join(':');
 }
 
+function clearDataLayer() {
+  window.adobeDataLayer = [];
+}
+
+function pushOneTrustConsentGroups() {
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const dl = window.adobeDataLayer;
+  dl.push({
+    event: 'LaunchOTLoaded',
+    // eslint-disable-next-line no-undef
+    OnetrustActiveGroups: typeof OnetrustActiveGroups !== 'undefined' ? OnetrustActiveGroups : '',
+  });
+}
+
 function sendAnalyticsPageEvent() {
   window.adobeDataLayer = window.adobeDataLayer || [];
   const dl = window.adobeDataLayer;
@@ -101,7 +115,7 @@ async function OptanonWrapper() {
     var y_n_y = {'aa': y, 'aam': n, 'ecid': y};
     var n_y_y = {'aa': n, 'aam': y, 'ecid': y};
     
-    if (typeof OnetrustActiveGroups != 'undefined')
+    if (typeof OnetrustActiveGroups !== 'undefined')
       if (OnetrustActiveGroups.includes(',C0002,'))
         return OnetrustActiveGroups.includes(',C0004,')?y_y_y:y_n_y;
       else
@@ -117,6 +131,8 @@ async function OptanonWrapper() {
   }
 
   loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`);
+  clearDataLayer();
+  pushOneTrustConsentGroups();
   sendAnalyticsPageEvent();
 }
 
