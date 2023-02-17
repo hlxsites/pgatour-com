@@ -305,9 +305,11 @@ async function loadLazy(doc) {
  * the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 4000);
-  // load anything that can be postponed to the latest here
+  if (!isInIFrame()) {
+    // eslint-disable-next-line import/no-cycle
+    window.setTimeout(() => import('./delayed.js'), 4000);
+    // load anything that can be postponed to the latest here
+  }
 }
 
 async function loadPage() {
