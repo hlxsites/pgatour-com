@@ -67,12 +67,9 @@ function sendAnalyticsPageEvent() {
   //       Object.assign(window.s, window.pgatour.Omniture.properties);
   //     }
   //   },
-  
   // };
-  
   // window.pgatour.docWrite = document.write.bind(document);
 }
-
 
 /* setup cookie preferences */
 function getCookie(cookieName) {
