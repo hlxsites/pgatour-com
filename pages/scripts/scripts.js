@@ -190,6 +190,50 @@ export function getPgaTourDomain() {
   return isProd ? pgaTourProdUrl : pgaTourStagingUrl;
 }
 
+function getPageName(sectionName) {
+  const pageSectionParts = window.location.pathname.split('/');
+  if (sectionName) {
+    pageSectionParts.push(sectionName);
+  }
+  return pageSectionParts.filter((subPath) => subPath !== '').join(':');
+}
+
+export function clearDataLayer() {
+  window.adobeDataLayer = [];
+}
+
+export function pushOneTrustConsentGroups() {
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const dl = window.adobeDataLayer;
+  dl.push({
+    event: 'LaunchOTLoaded',
+    // eslint-disable-next-line no-undef
+    OnetrustActiveGroups: typeof OnetrustActiveGroups !== 'undefined' ? OnetrustActiveGroups : '',
+  });
+}
+
+export function sendAnalyticsPageEvent(sectionName) {
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const dl = window.adobeDataLayer;
+  const tournamentID = getMetadata('tournamentID');
+  const isUserLoggedIn = window.gigyaAccountInfo && window.gigyaAccountInfo != null
+    && window.gigyaAccountInfo.errorCode === 0;
+  dl.push({
+    event: 'pageLoaded',
+    pageName: getPageName(sectionName),
+    pageUrl: window.location.href,
+    siteSection: 'pages',
+    siteSubSection: '',
+    siteSubSection2: '',
+    gigyaID: isUserLoggedIn && window.gigyaAccountInfo.UID ? window.gigyaAccountInfo.UID : '',
+    userLoggedIn: isUserLoggedIn ? 'Logged In' : 'Logged Out',
+    tourName: 'pgatour',
+    tournamentID,
+    ipAddress: '127.0.0.1',
+    deviceType: 'Web',
+  });
+}
+
 /**
  * load the header and footer content from pgatour.com
  * @param {*} header the header element

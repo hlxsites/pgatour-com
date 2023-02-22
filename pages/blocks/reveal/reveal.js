@@ -1,5 +1,5 @@
 import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { sendAnalyticsPageEvent } from '../../scripts/delayed.js';
+import { sendAnalyticsPageEvent } from '../../scripts/scripts.js';
 
 // array to track sections already loaded so we don't call analytics twice
 const sectionRevealLoadedTracker = [];

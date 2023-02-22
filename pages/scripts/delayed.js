@@ -1,6 +1,11 @@
 import { sampleRUM, fetchPlaceholders, getMetadata } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
-import { loadScript } from './scripts.js';
+import {
+  loadScript,
+  sendAnalyticsPageEvent,
+  clearDataLayer,
+  pushOneTrustConsentGroups,
+} from './scripts.js';
 
 const placeholders = await fetchPlaceholders();
 const isProd = window.location.hostname.endsWith(placeholders.hostname);
@@ -27,51 +32,6 @@ window.pgatour.tracking = {
     status: false,
   },
 };
-
-function getPageName(sectionName) {
-  const pageSectionParts = window.location.pathname.split('/');
-  if (sectionName) {
-    pageSectionParts.push(sectionName);
-  }
-  return pageSectionParts.filter((subPath) => subPath !== '').join(':');
-}
-
-function clearDataLayer() {
-  window.adobeDataLayer = [];
-}
-
-function pushOneTrustConsentGroups() {
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  const dl = window.adobeDataLayer;
-  dl.push({
-    event: 'LaunchOTLoaded',
-    // eslint-disable-next-line no-undef
-    OnetrustActiveGroups: typeof OnetrustActiveGroups !== 'undefined' ? OnetrustActiveGroups : '',
-  });
-}
-
-// eslint-disable-next-line import/prefer-default-export
-export function sendAnalyticsPageEvent(sectionName) {
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  const dl = window.adobeDataLayer;
-  const tournamentID = getMetadata('tournamentID');
-  const isUserLoggedIn = window.gigyaAccountInfo && window.gigyaAccountInfo != null
-    && window.gigyaAccountInfo.errorCode === 0;
-  dl.push({
-    event: 'pageLoaded',
-    pageName: getPageName(sectionName),
-    pageUrl: window.location.href,
-    siteSection: 'pages',
-    siteSubSection: '',
-    siteSubSection2: '',
-    gigyaID: isUserLoggedIn && window.gigyaAccountInfo.UID ? window.gigyaAccountInfo.UID : '',
-    userLoggedIn: isUserLoggedIn ? 'Logged In' : 'Logged Out',
-    tourName: 'pgatour',
-    tournamentID,
-    ipAddress: '127.0.0.1',
-    deviceType: 'Web',
-  });
-}
 
 /* setup cookie preferences */
 function getCookie(cookieName) {
