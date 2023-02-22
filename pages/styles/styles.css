@@ -394,16 +394,6 @@ main .section > .default-content-wrapper {
   padding: 1rem 2rem;
 }
 
-/* company pages */
-.company-pages main .section:not(:first-child) {
-  color: var(--color-white);
-  background-color: var(--color-tour-blue);
-}
-
-.company-pages main .section:not(:first-child) :is(h3, h4, h5, h6) {
-  color: var(--color-tour-red);
-}
-
 /* highlight */
 main .section.highlight > .default-content-wrapper {
   background-color: var(--color-white);
