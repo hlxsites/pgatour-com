@@ -30,7 +30,7 @@ main .reveal video {
 /* IMG POSITIONING */
 main .reveal .focus-top img,
 main .reveal .focus-top video {
-  object-position: top;
+  object-position: 50% 20%;
 }
 
 main .reveal .focus-left img,
@@ -40,7 +40,7 @@ main .reveal .focus-left video {
 
 main .reveal .focus-bottom img,
 main .reveal .focus-bototm video {
-  object-position: bottom;
+  object-position: 50% 80%;
 }
 
 main .reveal .focus-right img,
@@ -50,22 +50,22 @@ main .reveal .focus-right video {
 
 main .reveal .focus-top-left img,
 main .reveal .focus-top-left video {
-  object-position: 20% top;
+  object-position: 20% 20%;
 }
 
 main .reveal .focus-top-right img,
 main .reveal .focus-top-right video {
-  object-position: 80% top;
+  object-position: 80% 20%;
 }
 
 main .reveal .focus-bottom-left img,
 main .reveal .focus-bottom-left video {
-  object-position: 20% bottom;
+  object-position: 20% 80%;
 }
 
 main .reveal .focus-bottom-right img,
 main .reveal .focus-bottom-right video {
-  object-position: 80% bottom;
+  object-position: 80% 80%;
 }
 
 /* MEDIA */
@@ -93,18 +93,18 @@ main .reveal .reveal-media video[data-loaded] {
   opacity: 1;
 }
 
-main .reveal .reveal-media video[data-orientation='landscape'] {
+main .reveal .reveal-media [data-orientation='landscape'] {
   display: none;
   visibility: hidden;
 }
 
 @media (min-width: 900px) {
-  main .reveal .reveal-media video[data-orientation='portrait'] {
+  main .reveal .reveal-media [data-orientation='portrait'] {
     display: none;
     visibility: hidden;
   }
 
-  main .reveal .reveal-media video[data-orientation='landscape'] {
+  main .reveal .reveal-media [data-orientation='landscape'] {
     display: unset;
     visibility: visible;
   }

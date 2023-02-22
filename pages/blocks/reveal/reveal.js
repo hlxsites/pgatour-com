@@ -54,20 +54,21 @@ export default async function decorate(block) {
         videoObserver.observe(videoWrapper);
       } else {
         // optimize images
-        const image = child.querySelector('img');
-        if (image) {
-          // first image should be loaded eager
-          const optimized = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
-          image.closest('picture').replaceWith(optimized);
-          const imageObserver = new IntersectionObserver(async (entries) => {
-            const observed = entries.find((entry) => entry.isIntersecting);
-            if (observed) {
-              imageObserver.disconnect();
-              const observedImg = optimized.querySelector('img');
-              if (!observedImg.complete) observedImg.setAttribute('loading', 'eager');
-            }
-          }, { threshold: 0 });
-          imageObserver.observe(optimized);
+        const images = child.querySelectorAll('img');
+        if (images) {
+          images.forEach((image) => {
+            const optimized = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
+            image.closest('picture').replaceWith(optimized);
+            const imageObserver = new IntersectionObserver(async (entries) => {
+              const observed = entries.find((entry) => entry.isIntersecting);
+              if (observed) {
+                imageObserver.disconnect();
+                const observedImg = optimized.querySelector('img');
+                if (!observedImg.complete) observedImg.setAttribute('loading', 'eager');
+              }
+            }, { threshold: 0 });
+            imageObserver.observe(optimized);
+          });
         }
       }
       // apply focus direction
@@ -80,12 +81,19 @@ export default async function decorate(block) {
       }
     });
     img.classList.remove('button-container');
+    const mediaOrientations = ['landscape', 'portrait'];
     // set video orientations
     const allVideos = img.querySelectorAll('video');
     if (allVideos && allVideos.length > 1) {
-      const videoTypes = ['landscape', 'portrait'];
       allVideos.forEach((video, j) => {
-        if (videoTypes[j]) video.dataset.orientation = videoTypes[j];
+        if (mediaOrientations[j]) video.dataset.orientation = mediaOrientations[j];
+      });
+    }
+    // set image orientations
+    const allImgs = img.querySelectorAll('img');
+    if (allImgs && allImgs.length > 1) {
+      allImgs.forEach((image, j) => {
+        if (mediaOrientations[j]) image.dataset.orientation = mediaOrientations[j];
       });
     }
     media.append(img);
