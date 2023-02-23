@@ -1,4 +1,8 @@
 import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { sendAnalyticsPageEvent } from '../../scripts/scripts.js';
+
+// array to track sections already loaded so we don't call analytics twice
+const sectionRevealLoadedTracker = [];
 
 export default async function decorate(block) {
   const media = document.createElement('div');
@@ -9,12 +13,17 @@ export default async function decorate(block) {
   block.innerHTML = '';
   block.append(media, copy);
 
+  const section = block.closest('.section');
+  const { sectionId } = section.dataset;
   let lastTop = 0;
   let scrollDown = null;
 
   rows.forEach((row, i) => {
     const [img, text] = [...row.children];
-    if (!i) img.setAttribute('data-intersecting', true);
+    img.setAttribute('data-section-media-id', `${sectionId}.${i + 1}`);
+    if (!i) {
+      img.setAttribute('data-intersecting', true);
+    }
     [...img.children].forEach((child) => {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         // transform videos
@@ -101,6 +110,10 @@ export default async function decorate(block) {
       if (observed) {
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
+        if (!sectionRevealLoadedTracker.includes(matchingMedia.dataset.sectionMediaId)) {
+          sectionRevealLoadedTracker.push(matchingMedia.dataset.sectionMediaId);
+          sendAnalyticsPageEvent(matchingMedia.dataset.sectionMediaId);
+        }
       } else {
         matchingMedia.removeAttribute('data-intersecting');
         const previousMedia = mediaSlides[i - 1];

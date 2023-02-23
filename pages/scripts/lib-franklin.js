@@ -244,7 +244,7 @@ export function readBlockConfig(block) {
  * @param {Element} $main The container element
  */
 export function decorateSections(main) {
-  main.querySelectorAll(':scope > div').forEach((section) => {
+  main.querySelectorAll(':scope > div').forEach((section, index) => {
     const wrappers = [];
     let defaultContent = false;
     [...section.children].forEach((e) => {
@@ -259,6 +259,8 @@ export function decorateSections(main) {
     wrappers.forEach((wrapper) => section.append(wrapper));
     section.classList.add('section');
     section.setAttribute('data-section-status', 'initialized');
+    // section id used for analytics
+    section.setAttribute('data-section-id', `section-${index + 1}`);
 
     /* process section metadata */
     const sectionMeta = section.querySelector('div.section-metadata');

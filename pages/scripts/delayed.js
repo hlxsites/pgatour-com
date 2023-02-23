@@ -1,6 +1,11 @@
 import { sampleRUM, fetchPlaceholders, getMetadata } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
-import { loadScript } from './scripts.js';
+import {
+  loadScript,
+  sendAnalyticsPageEvent,
+  clearDataLayer,
+  pushOneTrustConsentGroups,
+} from './scripts.js';
 
 const placeholders = await fetchPlaceholders();
 const isProd = window.location.hostname.endsWith(placeholders.hostname);
@@ -27,66 +32,6 @@ window.pgatour.tracking = {
     status: false,
   },
 };
-
-function getPageName() {
-  return window.location.pathname.split('/')
-    .filter((subPath) => subPath !== '')
-    .join(':');
-}
-
-function clearDataLayer() {
-  window.adobeDataLayer = [];
-}
-
-function pushOneTrustConsentGroups() {
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  const dl = window.adobeDataLayer;
-  dl.push({
-    event: 'LaunchOTLoaded',
-    // eslint-disable-next-line no-undef
-    OnetrustActiveGroups: typeof OnetrustActiveGroups !== 'undefined' ? OnetrustActiveGroups : '',
-  });
-}
-
-function sendAnalyticsPageEvent(gigyaResponse) {
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  const dl = window.adobeDataLayer;
-  const tournamentID = getMetadata('tournamentID');
-  const isUserLoggedIn = gigyaResponse && gigyaResponse != null && gigyaResponse.errorCode === 0;
-  dl.push({
-    event: 'pageLoaded',
-    pageName: getPageName(),
-    pageUrl: window.location.href,
-    siteSection: 'pages',
-    siteSubSection: '',
-    siteSubSection2: '',
-    gigyaID: isUserLoggedIn && gigyaResponse.UID ? gigyaResponse.UID : '',
-    userLoggedIn: isUserLoggedIn ? 'Logged In' : 'Logged Out',
-    tourName: 'pgatour',
-    tournamentID,
-    ipAddress: '127.0.0.1',
-    deviceType: 'Web',
-  });
-  // const pname = window.location.pathname.split('/').pop();
-  // window.pgatour.Omniture = {
-  //   properties: {
-  //     pageName: `pgatour:tournaments:the-players-championship:${pname}`,
-  //     eVar16: `pgatour:tournaments:the-players-championship:${pname}`,
-  //     prop18: pageType,
-  //     eVar1: 'pgatour',
-  //     prop1: 'pgatour',
-  //     prop2: 'r011',
-  //     eVar2: 'r011',
-  //     eVar6: window.location.href,
-  //   },
-  //   defineOmnitureVars: () => {
-  //     if (window.s) {
-  //       Object.assign(window.s, window.pgatour.Omniture.properties);
-  //     }
-  //   },
-  // };
-  // window.pgatour.docWrite = document.write.bind(document);
-}
 
 /* setup cookie preferences */
 function getCookie(cookieName) {
@@ -136,11 +81,26 @@ async function OptanonWrapper() {
   loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`, () => {
     clearDataLayer();
     pushOneTrustConsentGroups();
+
     loadScript('https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IscKmAoYcuwP8zpTnatC3hXBUm8rPuI-Hg_cZJ-jL-M7LgqCkxmwe-ps1Qy7PoWd', () => {
       // eslint-disable-next-line no-undef
       gigya.accounts.getAccountInfo({
         callback: (response) => {
-          sendAnalyticsPageEvent(response);
+          window.gigyaAccountInfo = response;
+          sendAnalyticsPageEvent();
+
+          // wire up section analytics for stories
+          if (document.body.classList.contains('story')) {
+            document.querySelector('main').querySelectorAll('.section').forEach((section) => {
+              const sectionObserver = new IntersectionObserver(async (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                  sectionObserver.disconnect();
+                  sendAnalyticsPageEvent(section.dataset.sectionId);
+                }
+              }, { threshold: 0 });
+              sectionObserver.observe(section);
+            });
+          }
         },
       });
     });
