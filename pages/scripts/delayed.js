@@ -18,6 +18,8 @@ if (!isProd === 'this') {
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
+(new IntersectionObserver(() => sampleRUM('boink'), { threshold: 1 })).observe(document.body);
+
 // add more delayed functionality here
 window.pgatour = window.pgatour || {};
 window.pgatour.tracking = {
