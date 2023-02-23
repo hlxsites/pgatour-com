@@ -18,7 +18,13 @@ if (!isProd === 'this') {
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
-(new IntersectionObserver(() => sampleRUM('viewfooter'), { threshold: 1 })).observe(document.querySelector('footer'));
+window.onscroll = function(ev) {
+  // we use window.onscroll instead of an intersection observer to avoid the invisible footer triggering the
+  // observer which can happen when the user scrolls very fast.
+  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    sampleRUM('viewfooter', { source: 'footer' });
+  }
+};
 
 // add more delayed functionality here
 window.pgatour = window.pgatour || {};
