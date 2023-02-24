@@ -86,8 +86,8 @@ async function OptanonWrapper() {
     localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(adobeSettings));
   }
 
+  clearDataLayer();
   loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`, () => {
-    clearDataLayer();
     pushOneTrustConsentGroups();
 
     loadScript('https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IscKmAoYcuwP8zpTnatC3hXBUm8rPuI-Hg_cZJ-jL-M7LgqCkxmwe-ps1Qy7PoWd', () => {
