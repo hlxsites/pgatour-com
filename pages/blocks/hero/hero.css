@@ -19,6 +19,10 @@ main .hero {
   text-align: center;
 }
 
+main .hero.no-gradient {
+  background-image: none;
+}
+
 main .hero > div {
   padding: 0 16px;
 }

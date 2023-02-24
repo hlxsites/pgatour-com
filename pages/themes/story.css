@@ -51,6 +51,11 @@
   text-transform: uppercase;
 }
 
+.story main .hero.no-gradient {
+  background-image: none;
+}
+
+
 .story main .hero svg {
   height: auto;
   width: 140px;
