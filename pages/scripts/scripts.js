@@ -44,6 +44,7 @@ export function addHeaderSizing(block, classPrefix = 'heading', selector = 'h1, 
 }
 
 function buildHeroBlock(main) {
+  if (main.querySelector('.hero')) return;
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
