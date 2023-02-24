@@ -99,14 +99,16 @@ async function OptanonWrapper() {
 
           // wire up section analytics for stories
           if (document.body.classList.contains('story')) {
-            document.querySelector('main').querySelectorAll('.section').forEach((section) => {
-              const sectionObserver = new IntersectionObserver(async (entries) => {
-                if (entries.some((entry) => entry.isIntersecting)) {
-                  sectionObserver.disconnect();
-                  sendAnalyticsPageEvent(section.dataset.sectionId);
-                }
-              }, { threshold: 0 });
-              sectionObserver.observe(section);
+            document.querySelector('main').querySelectorAll('.section').forEach((section, i) => {
+              if (i > 0) {
+                const sectionObserver = new IntersectionObserver(async (entries) => {
+                  if (entries.some((entry) => entry.isIntersecting)) {
+                    sectionObserver.disconnect();
+                    sendAnalyticsPageEvent(section.dataset.sectionId);
+                  }
+                }, { threshold: 0 });
+                sectionObserver.observe(section);
+              }
             });
           }
         },
