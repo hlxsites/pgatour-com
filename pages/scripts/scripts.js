@@ -184,7 +184,7 @@ export function addFavIcon(href) {
  * @returns the pgatour domain from which to load content
  */
 export function getPgaTourDomain() {
-  const isProd = window.location.host === 'www.pgatour.com';
+  const isProd = window.location.host.includes('pgatour.com');
   const pgaTourProdUrl = 'https://www.pgatour.com';
   const pgaTourStagingUrl = 'https://pgatour-uat.dev.pgatourstaging.com';
 
