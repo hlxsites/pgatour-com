@@ -2,6 +2,10 @@
   <title>A Perfect Pair</title>
   <g>
     <g>
+      <path fill="#EE2840" d="M46.7,44.6H31.6l-1.7-6H17.8l-1.6,6H1.7
+        L16.5,2h15.4L46.7,44.6z M27.1,27.9l-3.1-11.4l-3.1,11.4H27.1z"/>
+    </g>
+    <g>
       <linearGradient id="lg1" gradientUnits="userSpaceOnUse" x1="77.5999" y1="67.3382" x2="410.36" y2="-32.7843" gradientTransform="matrix(1 0 0 -1 0 93.3199)">
         <stop  offset="0" style="stop-color:#EF2734"/>
         <stop  offset="0.1454" style="stop-color:#EF3031"/>
@@ -105,14 +109,6 @@
       <path style="fill:url(#lg11);" d="M449.6,44.6h-16l-6.8-14.2H425v14.2
         h-13.9V2h18.5c5.2,0,9.2,0.9,12.3,3.1s5.2,5.9,5.2,10.5c0,8.6-5.2,11.7-7.1,12.8L449.6,44.6z M431.5,13.3
         c-0.6-0.5-1.5-0.8-3.1-0.8h-3.5v7.4h3.5c1.5,0,2.5-0.3,3.1-0.7c0.7-0.5,1.5-1.1,1.5-3S432.2,13.7,431.5,13.3z"/>
-    </g>
-    <g>
-      <linearGradient id="lg12" gradientUnits="userSpaceOnUse" x1="1.7012" y1="70.04" x2="46.7212" y2="70.04" gradientTransform="matrix(1 0 0 -1 0 93.3199)">
-        <stop  offset="0.5038" style="stop-color:#009B69"/>
-        <stop  offset="1" style="stop-color:#EE2840"/>
-      </linearGradient>
-      <path style="fill:url(#lg12);" d="M46.7,44.6H31.6l-1.7-6H17.8l-1.6,6H1.7
-        L16.5,2h15.4L46.7,44.6z M27.1,27.9l-3.1-11.4l-3.1,11.4H27.1z"/>
     </g>
   </g>
 </svg>
