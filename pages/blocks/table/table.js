@@ -25,6 +25,8 @@ export default async function decorate(block) {
       row.append(cell);
     });
   });
+  const cols = thead.querySelectorAll('th').length;
+  if (cols && cols === 2) table.classList.add('two-col');
   block.innerHTML = '';
   block.append(table);
 }
