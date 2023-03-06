@@ -100,7 +100,10 @@ async function OptanonWrapper() {
           // wire up section analytics for stories
           if (document.body.classList.contains('story')) {
             document.querySelector('main').querySelectorAll('.section').forEach((section, i) => {
-              if (i > 0) {
+              const isBlockQuote = section.classList.contains('blockquote-container');
+              // skip the first section and any block quote sections from analytics
+              // we only care about the reveal blocks, and the last section (credits)
+              if (i > 0 && !isBlockQuote) {
                 const sectionObserver = new IntersectionObserver(async (entries) => {
                   if (entries.some((entry) => entry.isIntersecting)) {
                     sectionObserver.disconnect();
