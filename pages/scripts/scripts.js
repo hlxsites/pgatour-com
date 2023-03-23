@@ -290,7 +290,7 @@ function isAppView() {
 /**
  * check if the page is inside an iframe.
  */
-function isInIFrame() {
+export function isInIFrame() {
   try {
     return window.self !== window.top;
   } catch (e) {
