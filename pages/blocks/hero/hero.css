@@ -172,6 +172,7 @@ main .hero h1 + p:not(.button-container) {
 
 main .hero a:any-link {
   color: var(--overlay-text-color);
+  text-decoration: underline;
 }
 
 main .hero a:hover {

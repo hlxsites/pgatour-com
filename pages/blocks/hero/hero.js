@@ -1,5 +1,5 @@
 import { decorateBlock, loadBlock } from '../../scripts/lib-franklin.js';
-import { addHeaderSizing } from '../../scripts/scripts.js';
+import { addHeaderSizing, isInIFrame } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   addHeaderSizing(block);
@@ -31,5 +31,11 @@ export default async function decorate(block) {
     </p>`;
     em.remove();
     block.parentNode.append(caption);
+  }
+
+  if (isInIFrame) {
+    block.querySelectorAll('a').forEach(async (link) => {
+      link.setAttribute('target', '_parent');
+    });
   }
 }
