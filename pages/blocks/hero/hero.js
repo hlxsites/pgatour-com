@@ -33,6 +33,6 @@ export default async function decorate(block) {
     block.parentNode.append(caption);
   }
   block.querySelectorAll('a').forEach(async (link) => {
-    link.setAttribute("target", "_parent");
+    link.setAttribute('target', '_parent');
   });
 }
