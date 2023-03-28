@@ -3,11 +3,11 @@
 }
 
 .info main .hero h1 {
-    font-size: min(78px, 6vw);
+    font-size: min(var(--heading-font-size-xxl), 6vw);
 }
 
 .info main .hero h1 + p:not(.button-container) {
     display: initial;
     visibility: visible;
-    font-size: min(var(--body-font-size-xl), 3vw);
+    font-size: min(var(--body-font-size-xxl), 3vw);
 }
