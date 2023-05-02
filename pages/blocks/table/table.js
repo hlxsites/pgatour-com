@@ -73,20 +73,20 @@ export default async function decorate(block) {
     block.innerHTML = '';
     block.append(table);
   } else {
-      table.append(thead, tbody);
-      [...block.children].forEach((child, i) => {
-        const row = document.createElement('tr');
-        if (i) tbody.append(row);
-        else thead.append(row);
-        [...child.children].forEach((col) => {
-          const cell = buildCell(i);
-          cell.innerHTML = col.innerHTML;
-          row.append(cell);
-        });
+    table.append(thead, tbody);
+    [...block.children].forEach((child, i) => {
+      const row = document.createElement('tr');
+      if (i) tbody.append(row);
+      else thead.append(row);
+      [...child.children].forEach((col) => {
+        const cell = buildCell(i);
+        cell.innerHTML = col.innerHTML;
+        row.append(cell);
       });
-      const cols = thead.querySelectorAll('th').length;
-      if (cols && cols === 2) table.classList.add('two-col');
-      block.innerHTML = '';
-      block.append(table);
+    });
+    const cols = thead.querySelectorAll('th').length;
+    if (cols && cols === 2) table.classList.add('two-col');
+    block.innerHTML = '';
+    block.append(table);
   }
 }
