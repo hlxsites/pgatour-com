@@ -1,4 +1,12 @@
 .table {
+  /* colors */
+  --color-navy: #003B75;
+  --color-green: #41AD49;
+  --color-yellow: #FFF200;
+  --color-orange: #EE9D38;
+  --color-red: #D2232A;
+  --color-purple: #C270F7;
+
   width: 100%;
   overflow-x: auto;
 }
@@ -49,4 +57,76 @@
 
 .table table.two-col thead th:nth-child(2) {
   width: 65%;
+}
+
+.table.weather tr th {
+  text-align: center;
+  border: none;
+}
+
+.table.weather tr th:first-child {
+  border-right: 5px solid var(--color-navy);
+}
+
+.table.weather tr td {
+  text-align: left;
+  border: 5px solid var(--color-navy);
+}
+
+.table.weather table {
+  border: none;
+  line-height: 1.2;
+  color: var(--color-navy);
+  font-size: var(--body-font-size-s)
+}
+
+.table.weather tr td:nth-child(odd) {
+  width: 50%;
+}
+
+.table.weather tr td img {
+  display: inline-block;
+  max-width: 33%;
+  margin: 0;
+}
+
+.table.weather tr td .weather-cell {
+  display: flex;
+  align-items: center;
+  font-size: var(--heading-font-size-xs);
+  font-weight: bold;
+}
+
+.table.weather tr td .weather-cell p {
+  margin: .25em;
+}
+
+.table.weather tr:nth-child(1) td:nth-child(1) {
+  background-color: var(--color-green);
+}
+
+.table.weather tr:nth-child(2) td:nth-child(1) {
+  background-color: var(--color-yellow);
+}
+
+.table.weather tr:nth-child(3) td:nth-child(1) {
+  background-color: var(--color-orange);
+}
+
+.table.weather tr:nth-child(4) td:nth-child(1) {
+  background-color: var(--color-red);
+}
+
+.table.weather tr:nth-child(5) td:nth-child(1) {
+  background-color: var(--color-purple);
+}
+
+@media (min-width: 900px) {
+.table.weather table {
+    font-size: var(--body-font-size-xl)
+  }
+
+.table.weather tr td .weather-cell {
+    font-size: var(--heading-font-size-m)
+  }
 }
