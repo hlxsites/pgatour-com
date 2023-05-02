@@ -77,7 +77,6 @@
 }
 
 .table.weather table {
-  border: none;
   line-height: 1.2;
   color: var(--color-navy);
   font-size: var(--body-font-size-s)
