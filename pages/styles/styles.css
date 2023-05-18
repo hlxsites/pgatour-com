@@ -122,8 +122,8 @@ html {
 
 @font-face {
   font-family: 'Suisse Intl-fallback';
-  src: local(arial);
-  size-adjust: 101%;
+  src: local('Arial');
+  size-adjust: 106.32%;
   ascent-override: 103%;
   descent-override: normal;
   line-gap-override: normal;
