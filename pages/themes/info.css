@@ -1,13 +1,17 @@
 .info main .hero > div > div {
-    padding-top: unset;
+  padding-top: unset;
 }
 
 .info main .hero h1 {
-    font-size: min(var(--heading-font-size-xxl), 6vw);
+  font-size: min(var(--heading-font-size-xxl), 6vw);
 }
 
 .info main .hero h1 + p:not(.button-container) {
-    display: initial;
-    visibility: visible;
-    font-size: min(var(--body-font-size-xxl), 3vw);
+  display: initial;
+  visibility: visible;
+  font-size: min(var(--body-font-size-xxl), 3vw);
+}
+
+.info main .section:not(:first-of-type):not(:last-of-type) > :last-child {
+  border-bottom: 1px solid;
 }
