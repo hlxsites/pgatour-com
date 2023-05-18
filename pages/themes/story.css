@@ -38,7 +38,7 @@
 
 /* HERO */
 .story main .hero-container + .section {
-  /* margin-top: -15px; */
+  margin-top: -15px;
 }
 
 .story main .hero-wrapper {
