@@ -12,6 +12,6 @@
   font-size: min(var(--body-font-size-xxl), 3vw);
 }
 
-.info main .section:not(.hero-container) > :last-child {
+.info main .section:not(:first-of-type):not(:last-of-type) > :last-child {
   border-bottom: 1px solid;
 }
