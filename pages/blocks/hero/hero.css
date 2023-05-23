@@ -197,6 +197,23 @@ main .hero img {
   object-fit: cover;
 }
 
+main .hero img[data-orientation='landscape'] {
+  display: none;
+  visibility: hidden;
+}
+
+@media (min-width: 900px) {
+  main .hero img[data-orientation='portrait'] {
+    display: none;
+    visibility: hidden;
+  }
+
+  main .hero img[data-orientation='landscape'] {
+    display: unset;
+    visibility: visible;
+  }
+}
+
 /* buttons */
 main .hero p.button-container {
   margin: 0;
