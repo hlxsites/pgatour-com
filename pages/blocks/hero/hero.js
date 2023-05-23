@@ -3,6 +3,17 @@ import { addHeaderSizing, isInIFrame } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   addHeaderSizing(block);
+
+  // set image orientations
+  const mediaOrientations = ['landscape', 'portrait'];
+  const allImgs = block.querySelectorAll('img');
+  if (allImgs && allImgs.length > 1) {
+    allImgs.forEach((image, i) => {
+      if (mediaOrientations[i]) image.dataset.orientation = mediaOrientations[i];
+    });
+  }
+
+  // decorate buttons
   const btns = block.querySelector('.button-container');
   if (btns) {
     const secondaryBtn = btns.querySelector('.secondary');
@@ -15,6 +26,8 @@ export default async function decorate(block) {
     }
   }
   if (btns && btns.hasChildNodes()) block.classList.add('hero-buttons');
+
+  // decorate video
   const video = block.querySelector('.video');
   if (video) {
     block.classList.add('hero-video');
@@ -22,6 +35,8 @@ export default async function decorate(block) {
     decorateBlock(video);
     await loadBlock(video);
   }
+
+  // decorate caption
   const em = block.querySelector('em');
   if (em) {
     const caption = document.createElement('div');
