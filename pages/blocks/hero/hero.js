@@ -8,8 +8,9 @@ export default async function decorate(block) {
   const mediaOrientations = ['landscape', 'portrait'];
   const allImgs = block.querySelectorAll('img');
   if (allImgs && allImgs.length > 1) {
-    allImgs.forEach((image, i) => {
-      if (mediaOrientations[i]) image.dataset.orientation = mediaOrientations[i];
+    allImgs.forEach((img, i) => {
+      if (mediaOrientations[i]) img.dataset.orientation = mediaOrientations[i];
+      if (!img.complete) img.setAttribute('loading', 'eager');
     });
   }
 
