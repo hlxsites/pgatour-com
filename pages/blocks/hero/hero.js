@@ -5,9 +5,9 @@ export default async function decorate(block) {
   addHeaderSizing(block);
 
   // set image orientations
-  const mediaOrientations = ['landscape', 'portrait'];
   const allImgs = block.querySelectorAll('img');
   if (allImgs && allImgs.length > 1) {
+    const mediaOrientations = ['landscape', 'portrait'];
     allImgs.forEach((img, i) => {
       if (mediaOrientations[i]) img.dataset.orientation = mediaOrientations[i];
       if (!img.complete) img.setAttribute('loading', 'eager');
