@@ -71,10 +71,6 @@
   padding: 6px 0;
 }
 
-.story main .hero img {
-  object-position: 80% 50%;
-}
-
 .story main .hero h1 {
   font-size: min(78px, 11vw);
   font-weight: 700;
