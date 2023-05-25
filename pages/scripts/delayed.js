@@ -89,34 +89,6 @@ async function OptanonWrapper() {
   clearDataLayer();
   loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`, () => {
     pushOneTrustConsentGroups();
-
-    loadScript('https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IscKmAoYcuwP8zpTnatC3hXBUm8rPuI-Hg_cZJ-jL-M7LgqCkxmwe-ps1Qy7PoWd', () => {
-      // eslint-disable-next-line no-undef
-      gigya.accounts.getAccountInfo({
-        callback: (response) => {
-          window.gigyaAccountInfo = response;
-          sendAnalyticsPageEvent();
-
-          // wire up section analytics for stories
-          if (document.body.classList.contains('story')) {
-            document.querySelector('main').querySelectorAll('.section').forEach((section, i) => {
-              const isBlockQuote = section.classList.contains('blockquote-container');
-              // skip the first section and any block quote sections from analytics
-              // we only care about the reveal blocks, and the last section (credits)
-              if (i > 0 && !isBlockQuote) {
-                const sectionObserver = new IntersectionObserver(async (entries) => {
-                  if (entries.some((entry) => entry.isIntersecting)) {
-                    sectionObserver.disconnect();
-                    sendAnalyticsPageEvent(section.dataset.sectionId);
-                  }
-                }, { threshold: 0 });
-                sectionObserver.observe(section);
-              }
-            });
-          }
-        },
-      });
-    });
   });
 }
 
@@ -127,7 +99,7 @@ if (otId) {
   cookieScript.setAttribute('data-dlayer-name', 'adobeDataLayer');
   cookieScript.setAttribute('data-nscript', 'beforeInteractive');
 
-  // window.OptanonWrapper = OptanonWrapper;
+  window.OptanonWrapper = OptanonWrapper;
 
   // if (document.querySelector('.ads')) {
   //   const adsBlock = document.querySelector('.ads');
