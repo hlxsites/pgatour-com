@@ -352,7 +352,7 @@ async function loadLazy(doc) {
 function loadDelayed() {
   if (!isInIFrame()) {
     // eslint-disable-next-line import/no-cycle
-    window.setTimeout(() => import('./delayed.js'), 6000);
+    // window.setTimeout(() => import('./delayed.js'), 6000);
     // load anything that can be postponed to the latest here
   }
 }
