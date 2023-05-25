@@ -126,11 +126,11 @@ export default async function decorate(block) {
     copy.append(text);
   });
 
-  // setTimeout(() => {
-  //   block.querySelectorAll('img').forEach((img) => {
-  //     if (!img.complete) img.setAttribute('loading', 'eager');
-  //   });
-  // }, 4000);
+  setTimeout(() => {
+    block.querySelectorAll('img').forEach((img) => {
+      if (!img.complete) img.setAttribute('loading', 'eager');
+    });
+  }, 4000);
 
   window.addEventListener('scroll', () => {
     const top = window.pageYOffset || document.documentElement.scrollTop;
