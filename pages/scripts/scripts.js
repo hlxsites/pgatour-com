@@ -329,14 +329,14 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-//  if (isAppView() || isInIFrame()) {
-//    doc.querySelector('header').remove();
-//    doc.querySelector('footer').remove();
-//  } else {
-//    await loadHeaderFooterContent(doc.querySelector('header'), doc.querySelector('footer'));
-//    loadHeaderEx(doc.querySelector('header'));
-//    loadFooterEx(doc.querySelector('footer'));
-//  }
+  if (isAppView() || isInIFrame()) {
+    doc.querySelector('header').remove();
+    doc.querySelector('footer').remove();
+  } else {
+    await loadHeaderFooterContent(doc.querySelector('header'), doc.querySelector('footer'));
+    loadHeaderEx(doc.querySelector('header'));
+    loadFooterEx(doc.querySelector('footer'));
+  }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
