@@ -127,7 +127,7 @@ if (otId) {
   cookieScript.setAttribute('data-dlayer-name', 'adobeDataLayer');
   cookieScript.setAttribute('data-nscript', 'beforeInteractive');
 
-  window.OptanonWrapper = OptanonWrapper;
+  // window.OptanonWrapper = OptanonWrapper;
 
   // if (document.querySelector('.ads')) {
   //   const adsBlock = document.querySelector('.ads');
