@@ -87,9 +87,6 @@ async function OptanonWrapper() {
   }
 
   clearDataLayer();
-  loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`, () => {
-    pushOneTrustConsentGroups();
-  });
 }
 
 const otId = placeholders.onetrustId;
