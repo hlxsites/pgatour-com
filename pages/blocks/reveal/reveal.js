@@ -25,15 +25,19 @@ export default async function decorate(block) {
         const wrapper = entry.target;
         const video = wrapper.querySelector('video');
         const source = video.querySelector('source');
+        const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
         if (entry.isIntersecting) {
-          if (!source.hasAttribute('src')) {
-            source.src = source.dataset.src;
-            video.load();
-            video.addEventListener('loadeddata', () => {
-              video.setAttribute('data-loaded', true);
-            });
+          if ((isFirstVideo && entry.intersectionRatio >= 0)
+            || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
+            if (!source.hasAttribute('src')) {
+              source.src = source.dataset.src;
+              video.load();
+              video.addEventListener('loadeddata', () => {
+                video.setAttribute('data-loaded', true);
+              });
+            }
+            video.play();
           }
-          video.play();
         } else {
           video.pause();
         }
