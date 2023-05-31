@@ -20,6 +20,26 @@ export default async function decorate(block) {
     if (!i) {
       img.setAttribute('data-intersecting', true);
     }
+    const videoObserver = new IntersectionObserver(async (entries) => {
+      entries.forEach((entry) => {
+        const wrapper = entry.target;
+        const video = wrapper.querySelector('video');
+        const source = video.querySelector('source');
+        if (entry.isIntersecting) {
+          if (!source.hasAttribute('src')) {
+            source.src = source.dataset.src;
+            video.load();
+            video.addEventListener('loadeddata', () => {
+              video.setAttribute('data-loaded', true);
+            });
+          }
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+    }, { threshold: [0, 0.5] });
+
     [...img.children].forEach((child) => {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         // transform videos
@@ -30,23 +50,6 @@ export default async function decorate(block) {
           <source data-src="${a.href}" type="video/mp4" />
         </video>`;
         child.replaceWith(videoWrapper);
-        const video = videoWrapper.querySelector('video');
-        const source = videoWrapper.querySelector('source');
-        const videoObserver = new IntersectionObserver(async (entries) => {
-          const observed = entries.find((entry) => entry.isIntersecting);
-          if (observed) {
-            if (!source.hasAttribute('src')) {
-              source.src = source.dataset.src;
-              video.load();
-              video.addEventListener('loadeddata', () => {
-                video.setAttribute('data-loaded', true);
-              });
-            }
-            video.play();
-          } else {
-            video.pause();
-          }
-        }, { threshold: 0 });
         videoObserver.observe(videoWrapper);
       } else {
         // optimize images

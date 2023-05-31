@@ -19,13 +19,14 @@ main .reveal .video-wrapper {
   object-fit: cover;
 }
 
+/* 
 main .reveal .video-wrapper {
   top: 50vh;
 }
 
 main .reveal .reveal-media div[data-intersecting=true] .video-wrapper {
   top: 0;
-}
+} */
 
 main .reveal img,
 main .reveal video {
