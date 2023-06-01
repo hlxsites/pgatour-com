@@ -1,5 +1,29 @@
 import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
+const videoObserver = new IntersectionObserver(async (entries) => {
+  entries.forEach((entry) => {
+    const wrapper = entry.target;
+    const video = wrapper.querySelector('video');
+    const source = video.querySelector('source');
+    const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
+    if (entry.isIntersecting) {
+      if ((isFirstVideo && entry.intersectionRatio >= 0)
+        || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
+        if (!source.hasAttribute('src')) {
+          source.src = source.dataset.src;
+          video.load();
+          video.addEventListener('loadeddata', () => {
+            video.setAttribute('data-loaded', true);
+          });
+        }
+        video.play();
+      }
+    } else {
+      video.pause();
+    }
+  });
+}, { threshold: [0, 0.5] });
+
 export default async function decorate(block) {
   const media = document.createElement('div');
   media.classList.add('reveal-media');
@@ -20,6 +44,7 @@ export default async function decorate(block) {
     if (!i) {
       img.setAttribute('data-intersecting', true);
     }
+
     [...img.children].forEach((child) => {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         // transform videos
@@ -30,23 +55,6 @@ export default async function decorate(block) {
           <source data-src="${a.href}" type="video/mp4" />
         </video>`;
         child.replaceWith(videoWrapper);
-        const video = videoWrapper.querySelector('video');
-        const source = videoWrapper.querySelector('source');
-        const videoObserver = new IntersectionObserver(async (entries) => {
-          const observed = entries.find((entry) => entry.isIntersecting);
-          if (observed) {
-            if (!source.hasAttribute('src')) {
-              source.src = source.dataset.src;
-              video.load();
-              video.addEventListener('loadeddata', () => {
-                video.setAttribute('data-loaded', true);
-              });
-            }
-            video.play();
-          } else {
-            video.pause();
-          }
-        }, { threshold: 0 });
         videoObserver.observe(videoWrapper);
       } else {
         // optimize images
