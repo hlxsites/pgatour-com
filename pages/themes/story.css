@@ -55,6 +55,10 @@
   text-transform: uppercase;
 }
 
+.story main .hero.dark {
+  color: white;
+}
+
 .story main .hero.no-gradient {
   background-image: linear-gradient(#fff2 50%, transparent 66%);
 }
