@@ -2,7 +2,7 @@ function renderVideo(block, source, autoplay) {
   const vid = document.createElement('video');
 
   if (autoplay) {
-    vid.classList.add("centered");
+    vid.classList.add('centered');
     vid.setAttribute('autoplay', '');
   }
   if (block.classList.contains('loop')) {
@@ -33,7 +33,7 @@ export default async function decorate(block) {
       wrapper.prepend(pic);
       wrapper.addEventListener('click', () => {
         requestAnimationFrame(() => {
-          block.setAttribute("style", "height:" + wrapper.offsetHeight + "px");
+          block.setAttribute('style', `height:${wrapper.offsetHeight}px`);
           renderVideo(block, source, true);
         });
       });
