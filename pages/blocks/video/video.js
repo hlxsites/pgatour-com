@@ -32,10 +32,8 @@ export default async function decorate(block) {
       wrapper.innerHTML = '<div class="video-placeholder-play"><button title="Play"></button></div>';
       wrapper.prepend(pic);
       wrapper.addEventListener('click', () => {
-        requestAnimationFrame(() => {
-          block.setAttribute('style', `height:${wrapper.offsetHeight}px`);
-          renderVideo(block, source, true);
-        });
+        block.setAttribute('style', `height:${wrapper.offsetHeight}px`);
+        renderVideo(block, source, true);
       });
       block.append(wrapper);
     } else {
