@@ -2,6 +2,7 @@ function renderVideo(block, source, autoplay) {
   const vid = document.createElement('video');
 
   if (autoplay) {
+    vid.classList.add('centered');
     vid.setAttribute('autoplay', '');
   }
   if (block.classList.contains('loop')) {
@@ -31,6 +32,7 @@ export default async function decorate(block) {
       wrapper.innerHTML = '<div class="video-placeholder-play"><button title="Play"></button></div>';
       wrapper.prepend(pic);
       wrapper.addEventListener('click', () => {
+        block.setAttribute('style', `height:${wrapper.offsetHeight}px`);
         renderVideo(block, source, true);
       });
       block.append(wrapper);

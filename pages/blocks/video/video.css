@@ -2,6 +2,10 @@
   max-width: 100%;
 }
 
+.video video.centered {
+  height: 100%;
+}
+
 .video .video-placeholder {
   width: 100%;
   aspect-ratio: 16 / 9;
