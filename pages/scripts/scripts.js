@@ -236,28 +236,28 @@ export function sendAnalyticsPageEvent(sectionName) {
 }
 
 function convertDivsToUlLi(containerElement) {
-
   const quickLinksContainer = containerElement.querySelector('.css-rklm6r > .css-tb1hh0');
-  
+
   const linksDivContainer = quickLinksContainer.querySelector('.css-0');
 
   const ul = document.createElement('ul');
-  ul.className = 'css-l0v55i'; 
+  ul.className = 'css-l0v55i';
 
   const linkDivs = Array.from(linksDivContainer.getElementsByClassName('css-y3756o'));
 
-  for (const div of linkDivs) {
+  linkDivs.forEach((div) => {
     const li = document.createElement('li');
     while (div.firstChild) {
-      div.firstChild.classList.add("quickLink");
+      div.firstChild.classList.add('quickLink');
       li.appendChild(div.firstChild);
     }
     ul.appendChild(li);
-  }
+  });
 
   if (linksDivContainer.parentNode === quickLinksContainer) {
     quickLinksContainer.replaceChild(ul, linksDivContainer);
   } else {
+    // eslint-disable-next-line no-console
     console.error('The div to be replaced is not a direct child of the target container');
   }
 }

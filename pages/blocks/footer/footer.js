@@ -58,9 +58,9 @@ function buildNavList(navHeader, navLinks) {
     const subLi = document.createElement('li');
     subLi.classList.add('nav-item', 'text-l');
 
-    if(link.classList.contains("quickLink")){
-      subLi.classList.add("quickLi");
-      subUl.classList.add("quick-links-ul")
+    if (link.classList.contains('quickLink')) {
+      subLi.classList.add('quickLi');
+      subUl.classList.add('quick-links-ul');
     }
 
     const a = document.createElement('a');
