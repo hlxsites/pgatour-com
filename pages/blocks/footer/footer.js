@@ -57,6 +57,12 @@ function buildNavList(navHeader, navLinks) {
   navLinks.forEach((link) => {
     const subLi = document.createElement('li');
     subLi.classList.add('nav-item', 'text-l');
+
+    if(link.classList.contains("quickLink")){
+      subLi.classList.add("quickLi");
+      subUl.classList.add("quick-links-ul")
+    }
+
     const a = document.createElement('a');
     subLi.append(a);
     a.href = link.href;
