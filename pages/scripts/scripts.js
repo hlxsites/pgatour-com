@@ -235,6 +235,33 @@ export function sendAnalyticsPageEvent(sectionName) {
   });
 }
 
+function convertDivsToUlLi(containerElement) {
+  const quickLinksContainer = containerElement.querySelector('.css-rklm6r > .css-tb1hh0');
+
+  const linksDivContainer = quickLinksContainer.querySelector('.css-0');
+
+  const ul = document.createElement('ul');
+  ul.className = 'css-l0v55i';
+
+  const linkDivs = Array.from(linksDivContainer.getElementsByClassName('css-y3756o'));
+
+  linkDivs.forEach((div) => {
+    const li = document.createElement('li');
+    while (div.firstChild) {
+      div.firstChild.classList.add('quickLink');
+      li.appendChild(div.firstChild);
+    }
+    ul.appendChild(li);
+  });
+
+  if (linksDivContainer.parentNode === quickLinksContainer) {
+    quickLinksContainer.replaceChild(ul, linksDivContainer);
+  } else {
+    // eslint-disable-next-line no-console
+    console.error('The div to be replaced is not a direct child of the target container');
+  }
+}
+
 /**
  * load the header and footer content from pgatour.com
  * @param {*} header the header element
@@ -275,6 +302,7 @@ async function loadHeaderFooterContent(header, footer) {
     const footerBlock = document.createElement('div');
     footerBlock.classList.add('footer', 'block');
     footerBlock.append(...syntheticDiv.querySelector('#__next footer').children);
+    convertDivsToUlLi(footerBlock);
     footer.append(footerBlock);
   }
 }
