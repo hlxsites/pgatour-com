@@ -180,7 +180,7 @@ main .hero a:hover {
 }
 
 /* hero image */
-main .hero picture {
+main .hero picture.background {
   box-sizing: border-box;
   z-index: -1;
   position: absolute;
@@ -192,6 +192,10 @@ main .hero picture {
 }
 
 main .hero img {
+  width: 50%;
+}
+
+main .hero .background img {
   width: 100%;
   height: 100%;
   object-fit: cover;
