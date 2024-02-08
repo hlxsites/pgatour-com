@@ -49,13 +49,26 @@ export default async function decorate(block) {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         // transform videos
         const a = child.querySelector('a[href]') || child;
+
+        const isBrightcoveId = a.textContent.match(/^\d+$/);
+        const brightcoveUrl = isBrightcoveId? `https://players.brightcove.net/6082840763001/6QBtcb032_default/index.html?videoId=${a.textContent}&autoplay=any` : undefined;
+
         const videoWrapper = document.createElement('p');
         videoWrapper.className = 'video-wrapper';
-        videoWrapper.innerHTML = `<video loop muted playsInline>
-          <source data-src="${a.href}" type="video/mp4" />
-        </video>`;
+
+        if (!brightcoveUrl) {
+          videoWrapper.innerHTML = `<video loop muted playsInline>
+            <source data-src="${a.href}" type="video/mp4" />
+          </video>`;
+
+          videoObserver.observe(videoWrapper);
+        }
+        else {
+          videoWrapper.innerHTML = `<iframe loading="lazy" src='${brightcoveUrl}' allow="encrypted-media" allowfullscreen></iframe>`;
+          videoWrapper.setAttribute('data-video-status', 'loaded');
+        }
+
         child.replaceWith(videoWrapper);
-        videoObserver.observe(videoWrapper);
       } else {
         // optimize images
         const images = child.querySelectorAll('img');
