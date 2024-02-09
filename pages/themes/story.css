@@ -133,6 +133,6 @@
 }
 
 /* REVEAL */
-main .reveal-wrapper {
+.story main .reveal-wrapper {
   font-size: var(--body-font-size-xxl);
 }
