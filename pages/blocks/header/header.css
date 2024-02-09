@@ -80,7 +80,7 @@ header .header .story-container .story-sponsor img {
 header .header .story-container .story-progress {
   grid-area: scroll-progress;
   height: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 22px;
   border-radius: 360px;
   background-color: var(--color-dark-grey);
 }
