@@ -77,12 +77,18 @@ header .header .story-container .story-sponsor img {
   height: 100%;
 }
 
-header .header .story-container #scroll-progress {
+header .header .story-container .story-progress {
   grid-area: scroll-progress;
-  width: 0;
   max-width: 100%;
   height: 8px;
   margin-bottom: 8px;
+  border-radius: 360px;
+  background-color: var(--color-light-grey);
+}
+
+header .header .story-container #scroll-progress {
+  width: 0;
+  height: 8px;
   border-radius: 360px;
   background: var(--color-tour-blue);
   z-index: 10000;

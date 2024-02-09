@@ -405,7 +405,7 @@ export default async function decorate(block) {
 
     container.innerHTML += `<div class='story-title'><h5>${storyTitle}</h5></div>
                             <div class='story-sponsor'>${storySponsorImg}</div>
-                            <div id="scroll-progress"></div>`;
+                            <div class='story-progress'><div id="scroll-progress"></div></div>`;
   }
   if (!isStory) {
     const moreLinks = buildMoreLinks(moreLink);
