@@ -399,7 +399,12 @@ export default async function decorate(block) {
   const isStory = bodyClasses.includes('story');
   if (isStory) {
     container.classList.add('story-container');
-    container.innerHTML += `<div class='story-title'><h5>${getMetadata('story-title')}</h5></div><div class='story-sponsor'><img src='${getMetadata('story-sponsor')}'</img></div><div id="scroll-progress"></div>`;
+    const storyTitle = getMetadata('story-title');
+    const storySponsor = getMetadata('story-sponsor');
+
+    container.innerHTML += `<div class='story-title'><h5>${storyTitle}</h5></div>
+                            <div class='story-sponsor'>` + ((storySponsor) ? `<img src='${storySponsor}'</img></div>` : '</div>') +
+                            `<div id="scroll-progress"></div>`;
   }
   if (!isStory) {
     const moreLinks = buildMoreLinks(moreLink);
