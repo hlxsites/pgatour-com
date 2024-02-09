@@ -55,6 +55,26 @@
   text-transform: uppercase;
 }
 
+.story main .hero picture.background {
+  box-sizing: border-box;
+  z-index: -1;
+}
+
+.story main .hero picture:not(.background) {
+  position: relative;
+}
+
+.story main .hero .background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story main .hero img {
+  width: 50%;
+  height: auto;
+}
+
 .story main .hero.dark {
   color: white;
 }
