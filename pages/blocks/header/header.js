@@ -1,5 +1,5 @@
 import { getPgaTourDomain } from '../../scripts/scripts.js';
-import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
 
 function closeDialog(dlg) {
   dlg.classList.add('hide');
@@ -397,6 +397,16 @@ export default async function decorate(block) {
 
   const bodyClasses = [...document.body.classList];
   const isStory = bodyClasses.includes('story');
+  if (isStory) {
+    container.classList.add('story-container');
+    const storyTitle = getMetadata('story-title');
+    const storySponsor = getMetadata('story-sponsor');
+    const storySponsorImg = (storySponsor) ? `<img src='${storySponsor}'>` : '';
+
+    container.innerHTML += `<div class='story-title'><h5>${storyTitle}</h5></div>
+                            <div class='story-sponsor'>${storySponsorImg}</div>
+                            <div class='story-progress'><div id="scroll-progress"></div></div>`;
+  }
   if (!isStory) {
     const moreLinks = buildMoreLinks(moreLink);
     decorateNav(navLinks, moreLinks, container);
@@ -408,6 +418,16 @@ export default async function decorate(block) {
   }
 
   block.append(container);
+
+  if (isStory) {
+    const scrollProgress = document.getElementById('scroll-progress');
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+      scrollProgress.style.width = `${(scrollTop / height) * 100}%`;
+    });
+  }
 
   decorateIcons(block);
   block.classList.add('appear');

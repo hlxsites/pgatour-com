@@ -9,7 +9,10 @@ export default async function decorate(block) {
   if (allImgs && allImgs.length > 1) {
     const mediaOrientations = ['landscape', 'portrait'];
     allImgs.forEach((img, i) => {
-      if (mediaOrientations[i]) img.dataset.orientation = mediaOrientations[i];
+      if (mediaOrientations[i]) {
+        img.parentElement.classList.add('background');
+        img.dataset.orientation = mediaOrientations[i];
+      }
       if (!img.complete) img.setAttribute('loading', 'eager');
     });
   }
