@@ -82,7 +82,7 @@ header .header .story-container .story-progress {
   height: 8px;
   margin-bottom: 8px;
   border-radius: 360px;
-  background-color: var(--color-light-grey);
+  background-color: var(--color-dark-grey);
 }
 
 header .header .story-container #scroll-progress {
