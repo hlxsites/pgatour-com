@@ -1,60 +1,74 @@
-import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import {
+  toClassName,
+  createOptimizedPicture,
+} from "../../scripts/lib-franklin.js";
 
-const videoObserver = new IntersectionObserver(async (entries) => {
-  entries.forEach((entry) => {
-    const wrapper = entry.target;
-    const video = wrapper.querySelector('video');
-    const source = video.querySelector('source');
-    const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
-    if (entry.isIntersecting) {
-      if ((isFirstVideo && entry.intersectionRatio >= 0)
-        || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
-        if (!source.hasAttribute('src')) {
-          source.src = source.dataset.src;
-          video.load();
-          video.addEventListener('loadeddata', () => {
-            video.setAttribute('data-loaded', true);
-          });
+const videoObserver = new IntersectionObserver(
+  async (entries) => {
+    entries.forEach((entry) => {
+      const wrapper = entry.target;
+      const video = wrapper.querySelector("video");
+      const source = video.querySelector("source");
+      const isFirstVideo =
+        wrapper.parentElement.querySelector(".video-wrapper") === wrapper;
+      if (entry.isIntersecting) {
+        if (
+          (isFirstVideo && entry.intersectionRatio >= 0) ||
+          (!isFirstVideo && entry.intersectionRatio >= 0.5)
+        ) {
+          if (!source.hasAttribute("src")) {
+            source.src = source.dataset.src;
+            video.load();
+            video.addEventListener("loadeddata", () => {
+              video.setAttribute("data-loaded", true);
+            });
+          }
+          video.play();
         }
-        video.play();
+      } else {
+        video.pause();
       }
-    } else {
-      video.pause();
-    }
-  });
-}, { threshold: [0, 0.5] });
+    });
+  },
+  { threshold: [0, 0.5] }
+);
 
 export default async function decorate(block) {
-  const media = document.createElement('div');
-  media.classList.add('reveal-media');
-  const copy = document.createElement('div');
-  copy.classList.add('reveal-copy');
+  const media = document.createElement("div");
+  media.classList.add("reveal-media");
+  const copy = document.createElement("div");
+  copy.classList.add("reveal-copy");
   const rows = [...block.children];
-  block.innerHTML = '';
+  block.innerHTML = "";
   block.append(media, copy);
 
-  const section = block.closest('.section');
+  const section = block.closest(".section");
   const { sectionId } = section.dataset;
   let lastTop = 0;
   let scrollDown = null;
 
   rows.forEach((row, i) => {
     const [img, text] = [...row.children];
-    img.setAttribute('data-section-media-id', `${sectionId}.${i + 1}`);
+    img.setAttribute("data-section-media-id", `${sectionId}.${i + 1}`);
     if (!i) {
-      img.setAttribute('data-intersecting', true);
+      img.setAttribute("data-intersecting", true);
     }
 
     [...img.children].forEach((child) => {
-      if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
+      if (
+        child.querySelector("a[href]") ||
+        (child.nodeName === "A" && child.href)
+      ) {
         // transform videos
-        const a = child.querySelector('a[href]') || child;
+        const a = child.querySelector("a[href]") || child;
 
         const isBrightcoveId = a.textContent.match(/^\d+$/);
-        const brightcoveUrl = isBrightcoveId? `https://players.brightcove.net/6082840763001/6QBtcb032_default/index.html?videoId=${a.textContent}&autoplay=any` : undefined;
+        const brightcoveUrl = isBrightcoveId
+          ? `https://players.brightcove.net/6082840763001/6QBtcb032_default/index.html?videoId=${a.textContent}&autoplay=any&muted&loop&crossorigin`
+          : undefined;
 
-        const videoWrapper = document.createElement('p');
-        videoWrapper.className = 'video-wrapper';
+        const videoWrapper = document.createElement("p");
+        videoWrapper.className = "video-wrapper";
 
         if (!brightcoveUrl) {
           videoWrapper.innerHTML = `<video loop muted playsInline>
@@ -62,55 +76,66 @@ export default async function decorate(block) {
           </video>`;
 
           videoObserver.observe(videoWrapper);
-        }
-        else {
+        } else {
           videoWrapper.innerHTML = `<iframe loading="lazy" src='${brightcoveUrl}' allow="encrypted-media" allowfullscreen></iframe>`;
-          videoWrapper.setAttribute('data-video-status', 'loaded');
+          videoWrapper.setAttribute("data-video-status", "loaded");
         }
 
         child.replaceWith(videoWrapper);
       } else {
         // optimize images
-        const images = child.querySelectorAll('img');
+        const images = child.querySelectorAll("img");
         if (images) {
           images.forEach((image) => {
-            const optimized = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
-            image.closest('picture').replaceWith(optimized);
-            const imageObserver = new IntersectionObserver(async (entries) => {
-              const observed = entries.find((entry) => entry.isIntersecting);
-              if (observed) {
-                imageObserver.disconnect();
-                const observedImg = optimized.querySelector('img');
-                if (!observedImg.complete) observedImg.setAttribute('loading', 'eager');
-              }
-            }, { threshold: 0 });
+            const optimized = createOptimizedPicture(
+              image.src,
+              image.alt,
+              false,
+              [{ width: "2000" }]
+            );
+            image.closest("picture").replaceWith(optimized);
+            const imageObserver = new IntersectionObserver(
+              async (entries) => {
+                const observed = entries.find((entry) => entry.isIntersecting);
+                if (observed) {
+                  imageObserver.disconnect();
+                  const observedImg = optimized.querySelector("img");
+                  if (!observedImg.complete)
+                    observedImg.setAttribute("loading", "eager");
+                }
+              },
+              { threshold: 0 }
+            );
             imageObserver.observe(optimized);
           });
         }
       }
       // apply focus direction
-      if (child.querySelector('strong')) {
-        const strong = child.querySelector('strong');
+      if (child.querySelector("strong")) {
+        const strong = child.querySelector("strong");
         const direction = toClassName(strong.textContent);
         img.classList.add(`focus-${direction}`);
-        if (strong.parentElement.nodeName === 'P') strong.parentElement.remove();
+        if (strong.parentElement.nodeName === "P")
+          strong.parentElement.remove();
         else strong.remove();
       }
     });
-    img.classList.remove('button-container');
-    const mediaOrientations = ['landscape', 'portrait'];
+    img.classList.remove("button-container");
+    const mediaOrientations = ["landscape", "portrait"];
     // set video orientations
-    const allVideos = img.querySelectorAll('video');
+    const allVideos = img.querySelectorAll("video");
     if (allVideos && allVideos.length > 1) {
       allVideos.forEach((video, j) => {
-        if (mediaOrientations[j]) video.dataset.orientation = mediaOrientations[j];
+        if (mediaOrientations[j])
+          video.dataset.orientation = mediaOrientations[j];
       });
     }
     // set image orientations
-    const allImgs = img.querySelectorAll('img');
+    const allImgs = img.querySelectorAll("img");
     if (allImgs && allImgs.length > 1) {
       allImgs.forEach((image, j) => {
-        if (mediaOrientations[j]) image.dataset.orientation = mediaOrientations[j];
+        if (mediaOrientations[j])
+          image.dataset.orientation = mediaOrientations[j];
       });
     }
     media.append(img);
@@ -120,40 +145,62 @@ export default async function decorate(block) {
       text.innerHTML = `<p>${text.innerHTML}</p>`;
     }
 
-    const textObserver = new IntersectionObserver(async (entries) => {
-      const observed = entries.find((entry) => entry.isIntersecting);
-      const mediaSlides = [...media.children];
-      const matchingMedia = mediaSlides[i];
-      if (observed) {
-        mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
-        matchingMedia.setAttribute('data-intersecting', true);
-        // leaving the core code here in case we need to add this back
-        // if (!sectionRevealLoadedTracker.includes(matchingMedia.dataset.sectionMediaId)) {
-        //   sectionRevealLoadedTracker.push(matchingMedia.dataset.sectionMediaId);
-        //   sendAnalyticsPageEvent(matchingMedia.dataset.sectionMediaId);
-        // }
-      } else {
-        matchingMedia.removeAttribute('data-intersecting');
-        const previousMedia = mediaSlides[i - 1];
-        const nextMedia = mediaSlides[i + 1];
-        if (scrollDown && nextMedia) {
-          nextMedia.setAttribute('data-intersecting', true);
-        } else if (!scrollDown && previousMedia) {
-          previousMedia.setAttribute('data-intersecting', true);
+    const textObserver = new IntersectionObserver(
+      async (entries) => {
+        const observed = entries.find((entry) => entry.isIntersecting);
+        const mediaSlides = [...media.children];
+        const matchingMedia = mediaSlides[i];
+        if (observed) {
+          console.log("++++ ", matchingMedia.dataset.sectionMediaId);
+          mediaSlides.forEach((child) =>
+            child.removeAttribute("data-intersecting")
+          );
+          matchingMedia.setAttribute("data-intersecting", true);
+          matchingMedia.parentElement?.parentElement
+            ?.querySelector(".reveal-controls")
+            ?.remove();
+          const controls = document.createElement("div");
+          controls.classList.add("reveal-controls");
+          const muteButton = document.createElement("button");
+          muteButton.innerText = "Unmute";
+          muteButton.classList.add("mute-button");
+          muteButton.onclick = function () {
+            matchingMedia.querySelectorAll("video").forEach((video) => {
+              video.muted = !video.muted;
+              muteButton.innerText = video.muted ? "Unmute" : "Mute";
+            });
+          };
+          controls.append(muteButton);
+          matchingMedia.parentElement.parentElement.prepend(controls);
+          // leaving the core code here in case we need to add this back
+          // if (!sectionRevealLoadedTracker.includes(matchingMedia.dataset.sectionMediaId)) {
+          //   sectionRevealLoadedTracker.push(matchingMedia.dataset.sectionMediaId);
+          //   sendAnalyticsPageEvent(matchingMedia.dataset.sectionMediaId);
+          // }
+        } else {
+          matchingMedia.removeAttribute("data-intersecting");
+          const previousMedia = mediaSlides[i - 1];
+          const nextMedia = mediaSlides[i + 1];
+          if (scrollDown && nextMedia) {
+            nextMedia.setAttribute("data-intersecting", true);
+          } else if (!scrollDown && previousMedia) {
+            previousMedia.setAttribute("data-intersecting", true);
+          }
         }
-      }
-    }, { threshold: 0 });
+      },
+      { threshold: 0 }
+    );
     textObserver.observe(text);
     copy.append(text);
   });
 
   setTimeout(() => {
-    block.querySelectorAll('img').forEach((img) => {
-      if (!img.complete) img.setAttribute('loading', 'eager');
+    block.querySelectorAll("img").forEach((img) => {
+      if (!img.complete) img.setAttribute("loading", "eager");
     });
   }, 4000);
 
-  window.addEventListener('scroll', () => {
+  window.addEventListener("scroll", () => {
     const top = window.pageYOffset || document.documentElement.scrollTop;
     scrollDown = top >= lastTop;
     lastTop = top <= 0 ? 0 : top;

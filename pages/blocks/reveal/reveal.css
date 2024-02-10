@@ -146,3 +146,18 @@ main .reveal .reveal-copy div > * {
   background-color: var(--color-black-75);
   color: var(--color-white);
 }
+
+main .reveal .reveal-controls {
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  z-index: 999;
+}
+
+main .reveal .reveal-controls .mute-button {
+  position: sticky;
+  top: 20px;
+  margin-left: 20px;
+  border-color: white;
+  border-style: solid;
+}
