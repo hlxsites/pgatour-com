@@ -17,8 +17,8 @@ main .audio-container {
 
 main .audio-button {
   transform: translate(-20px, 70px);
-  width: 100px;
-  text-align: right;
+  width: 140px;
+  text-align: center;
   background-color: var(--color-black-50);
 }
 

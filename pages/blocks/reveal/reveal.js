@@ -56,7 +56,7 @@ export default async function decorate(block) {
   const audioContainer = document.createElement('div');
   audioContainer.classList.add('audio-container');
   const audioButton = document.createElement('button');
-  audioButton.innerText = 'Audio';
+  audioButton.innerText = 'Unmute';
   audioButton.classList.add('audio-button');
   audioContainer.appendChild(audioButton);
 
@@ -153,6 +153,7 @@ export default async function decorate(block) {
       const mediaSlides = [...media.children];
       const matchingMedia = mediaSlides[i];
       if (observed) {
+        audioButton.innerText = 'Unmute'
         block.querySelectorAll('video').forEach((video) => {
           video.muted = true;
         });
@@ -162,9 +163,9 @@ export default async function decorate(block) {
           audioButton.style.display = "none";
         } else audioButton.style.display = "block";
         audioButton.onclick = function() {
-          audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelectorAll('video').forEach((video) => {
-            video.muted = !video.muted;
-          });
+          const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
+          video.muted = !video.muted;
+          audioButton.innerText = (video.muted) ? 'Unmute' : 'Mute';
         };
         matchingMedia.parentElement.parentElement.prepend(audioContainer);
         // leaving the core code here in case we need to add this back
@@ -183,6 +184,7 @@ export default async function decorate(block) {
           if (!previousMedia.querySelector('video')) {
             audioButton.style.display = "none";
           } else audioButton.style.display = "block";
+          audioButton.innerText = 'Unmute'
           matchingMedia.querySelectorAll('video').forEach((video) => {
             video.muted = true;
           });
