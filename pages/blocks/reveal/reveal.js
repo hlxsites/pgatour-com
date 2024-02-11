@@ -13,12 +13,10 @@ const videoObserver = new IntersectionObserver(async (entries) => {
           videojs.getPlayer(videoJs).ready(function() {
             let player = this;
             // Play the video in the player
-            player.on('loadedmetadata', function() {
-              const video = videoJs.querySelector('video');
-              videoJs.setAttribute('data-loaded', true);
-              video.setAttribute('data-loaded', true);
-              player.play();
-            });
+            const video = videoJs.querySelector('video');
+            videoJs.setAttribute('data-loaded', true);
+            video.setAttribute('data-loaded', true);
+            player.play();
           });
         }
       }
@@ -45,6 +43,8 @@ const videoObserver = new IntersectionObserver(async (entries) => {
   });
 }, { threshold: [0, 0.5] });
 
+let videoWrappers = [];
+
 export default async function decorate(block) {
   const media = document.createElement('div');
   media.classList.add('reveal-media');
@@ -64,7 +64,6 @@ export default async function decorate(block) {
   const { sectionId } = section.dataset;
   let lastTop = 0;
   let scrollDown = null;
-  const videoWrappers = [];
 
   rows.forEach((row, i) => {
     const [img, text] = [...row.children];
