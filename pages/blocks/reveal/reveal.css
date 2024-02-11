@@ -19,6 +19,11 @@ main .audio-button {
   transform: translate(-20px, 70px);
   width: 100px;
   text-align: right;
+  background-color: var(--color-black-50);
+}
+
+main .audio-button:hover {
+  background-color: var(--color-black);
 }
 
 main .reveal picture,
