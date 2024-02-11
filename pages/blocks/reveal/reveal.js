@@ -10,13 +10,11 @@ const videoObserver = new IntersectionObserver(async (entries) => {
       if (entry.isIntersecting) {
         if ((isFirstVideo && entry.intersectionRatio >= 0)
           || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
-          videojs.getPlayer(videoJs).ready(function() {
-            let player = this;
-            // Play the video in the player
+          videojs.getPlayer(videoJs).ready(function () {
             const video = videoJs.querySelector('video');
             videoJs.setAttribute('data-loaded', true);
             video.setAttribute('data-loaded', true);
-            player.play();
+            this.play();
           });
         }
       }
@@ -43,7 +41,7 @@ const videoObserver = new IntersectionObserver(async (entries) => {
   });
 }, { threshold: [0, 0.5] });
 
-let videoWrappers = [];
+const videoWrappers = [];
 
 export default async function decorate(block) {
   const media = document.createElement('div');
