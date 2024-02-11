@@ -4,15 +4,16 @@ import { loadScript } from '../../scripts/scripts.js';
 const videoObserver = new IntersectionObserver(async (entries) => {
   entries.forEach((entry) => {
     const wrapper = entry.target;
-    const videoJs = wrapper.querySelector('video-js');
-    if (videoJs) {
+    const bcVideo = wrapper.querySelector('video-js');
+    if (bcVideo) {
       const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
       if (entry.isIntersecting) {
         if ((isFirstVideo && entry.intersectionRatio >= 0)
           || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
-          videojs.getPlayer(videoJs).ready(function () {
-            const video = videoJs.querySelector('video');
-            videoJs.setAttribute('data-loaded', true);
+          // eslint-disable-next-line no-undef
+          videojs.getPlayer(bcVideo).ready(function () {
+            const video = bcVideo.querySelector('video');
+            bcVideo.setAttribute('data-loaded', true);
             video.setAttribute('data-loaded', true);
             this.play();
           });
@@ -150,16 +151,16 @@ export default async function decorate(block) {
       const mediaSlides = [...media.children];
       const matchingMedia = mediaSlides[i];
       if (observed) {
-        audioButton.innerText = 'Unmute'
+        audioButton.innerText = 'Unmute';
         block.querySelectorAll('video').forEach((video) => {
           video.muted = true;
         });
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
         if (!matchingMedia.querySelector('video')) {
-          audioButton.style.display = "none";
-        } else audioButton.style.display = "block";
-        audioButton.onclick = function() {
+          audioButton.style.display = 'none';
+        } else audioButton.style.display = 'block';
+        audioButton.onclick = function () {
           const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
           video.muted = !video.muted;
           audioButton.innerText = (video.muted) ? 'Unmute' : 'Mute';
@@ -179,9 +180,9 @@ export default async function decorate(block) {
         } else if (!scrollDown && previousMedia) {
           previousMedia.setAttribute('data-intersecting', true);
           if (!previousMedia.querySelector('video')) {
-            audioButton.style.display = "none";
-          } else audioButton.style.display = "block";
-          audioButton.innerText = 'Unmute'
+            audioButton.style.display = 'none';
+          } else audioButton.style.display = 'block';
+          audioButton.innerText = 'Unmute';
           matchingMedia.querySelectorAll('video').forEach((video) => {
             video.muted = true;
           });
@@ -196,7 +197,7 @@ export default async function decorate(block) {
     loadScript('https://players.brightcove.net/6082840763001/default_default/index.min.js', () => {
       videoWrappers.forEach((video) => {
         videoObserver.observe(video);
-      })
+      });
     });
   }
 
