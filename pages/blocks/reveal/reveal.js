@@ -54,6 +54,12 @@ export default async function decorate(block) {
   const rows = [...block.children];
   block.innerHTML = '';
   block.append(media, copy);
+  const audioContainer = document.createElement('div');
+  audioContainer.classList.add('audio-container');
+  const audioButton = document.createElement('button');
+  audioButton.innerText = 'Audio';
+  audioButton.classList.add('audio-button');
+  audioContainer.appendChild(audioButton);
 
   const section = block.closest('.section');
   const { sectionId } = section.dataset;
@@ -147,8 +153,20 @@ export default async function decorate(block) {
       const mediaSlides = [...media.children];
       const matchingMedia = mediaSlides[i];
       if (observed) {
+        block.querySelectorAll('video').forEach((video) => {
+          video.muted = true;
+        });
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
+        if (!matchingMedia.querySelector('video')) {
+          audioButton.style.display = "none";
+        } else audioButton.style.display = "block";
+        audioButton.onclick = function() {
+          audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelectorAll('video').forEach((video) => {
+            video.muted = !video.muted;
+          });
+        };
+        matchingMedia.parentElement.parentElement.prepend(audioContainer);
         // leaving the core code here in case we need to add this back
         // if (!sectionRevealLoadedTracker.includes(matchingMedia.dataset.sectionMediaId)) {
         //   sectionRevealLoadedTracker.push(matchingMedia.dataset.sectionMediaId);
@@ -162,6 +180,12 @@ export default async function decorate(block) {
           nextMedia.setAttribute('data-intersecting', true);
         } else if (!scrollDown && previousMedia) {
           previousMedia.setAttribute('data-intersecting', true);
+          if (!previousMedia.querySelector('video')) {
+            audioButton.style.display = "none";
+          } else audioButton.style.display = "block";
+          matchingMedia.querySelectorAll('video').forEach((video) => {
+            video.muted = true;
+          });
         }
       }
     }, { threshold: 0 });

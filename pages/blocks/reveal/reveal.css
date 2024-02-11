@@ -7,6 +7,20 @@ main .reveal-wrapper {
   max-width: unset;
 }
 
+main .audio-container {
+  position: sticky;
+  top: calc(var(--nav-height) + 50px);
+  left: 30px;
+  z-index: 998;
+  height: 0;
+}
+
+main .audio-button {
+  transform: translateX(-20px);
+  width: 100px;
+  text-align: right;
+}
+
 main .reveal picture,
 main .reveal .video-wrapper {
   z-index: -1;
@@ -118,6 +132,7 @@ main .reveal .reveal-copy {
   position: relative;
   top: 0;
   margin-top: -100vh;
+  pointer-events: none;
 }
 
 main .reveal .reveal-copy div {
@@ -130,6 +145,7 @@ main .reveal .reveal-copy div {
   min-height: 100vh;
   margin: auto;
   padding: 100vh 32px;
+  pointer-events: auto;
 }
 
 main .reveal .reveal-copy div > * {
