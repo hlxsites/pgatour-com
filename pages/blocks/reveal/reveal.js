@@ -194,7 +194,7 @@ export default async function decorate(block) {
     copy.append(text);
   });
 
-  revealBlocksProcessed++;
+  revealBlocksProcessed+=1;
   if (videoWrappers && (revealBlocksProcessed === document.querySelectorAll('.reveal.block').length)) {
     loadScript('https://players.brightcove.net/6082840763001/default_default/index.min.js', () => {
       videoWrappers.forEach((video) => {
