@@ -46,7 +46,6 @@ const videoObserver = new IntersectionObserver(async (entries) => {
 }, { threshold: [0, 0.5] });
 
 export default async function decorate(block) {
-  loadScript('https://players.brightcove.net/6082840763001/default_default/index.min.js');
   const media = document.createElement('div');
   media.classList.add('reveal-media');
   const copy = document.createElement('div');
@@ -65,6 +64,7 @@ export default async function decorate(block) {
   const { sectionId } = section.dataset;
   let lastTop = 0;
   let scrollDown = null;
+  const videoWrappers = [];
 
   rows.forEach((row, i) => {
     const [img, text] = [...row.children];
@@ -96,7 +96,7 @@ export default async function decorate(block) {
         </video>`;
         }
         child.replaceWith(videoWrapper);
-        videoObserver.observe(videoWrapper);
+        videoWrappers.push(videoWrapper);
       } else {
         // optimize images
         const images = child.querySelectorAll('img');
@@ -192,6 +192,14 @@ export default async function decorate(block) {
     textObserver.observe(text);
     copy.append(text);
   });
+
+  if (videoWrappers) {
+    loadScript('https://players.brightcove.net/6082840763001/default_default/index.min.js', () => {
+      videoWrappers.forEach((video) => {
+        videoObserver.observe(video);
+      })
+    });
+  }
 
   setTimeout(() => {
     block.querySelectorAll('img').forEach((img) => {
