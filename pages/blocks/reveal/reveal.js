@@ -4,21 +4,20 @@ import { loadScript } from '../../scripts/scripts.js';
 const videoObserver = new IntersectionObserver(async (entries) => {
   entries.forEach((entry) => {
     const wrapper = entry.target;
-    let videoJs = wrapper.querySelector('video-js');
+    const videoJs = wrapper.querySelector('video-js');
     if (videoJs) {
       const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
       if (entry.isIntersecting) {
         if ((isFirstVideo && entry.intersectionRatio >= 0)
           || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
-          videojs.getPlayer(videoJs).ready(function() {
-            var myPlayer = this;
+          videojs.getPlayer(videoJs).ready(() => {
+            let player = this;
             // Play the video in the player
-            myPlayer.on('loadedmetadata',function(){
+            player.on('loadedmetadata', () => {
               const video = videoJs.querySelector('video');
-              console.log('loaded');
               videoJs.setAttribute('data-loaded', true);
               video.setAttribute('data-loaded', true);
-              myPlayer.play();
+              player.play();
             });
           });
         }
