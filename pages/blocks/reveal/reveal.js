@@ -10,10 +10,10 @@ const videoObserver = new IntersectionObserver(async (entries) => {
       if (entry.isIntersecting) {
         if ((isFirstVideo && entry.intersectionRatio >= 0)
           || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
-          videojs.getPlayer(videoJs).ready(() => {
+          videojs.getPlayer(videoJs).ready(function() {
             let player = this;
             // Play the video in the player
-            player.on('loadedmetadata', () => {
+            player.on('loadedmetadata', function() {
               const video = videoJs.querySelector('video');
               videoJs.setAttribute('data-loaded', true);
               video.setAttribute('data-loaded', true);
