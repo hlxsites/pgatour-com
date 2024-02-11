@@ -43,6 +43,7 @@ const videoObserver = new IntersectionObserver(async (entries) => {
 }, { threshold: [0, 0.5] });
 
 const videoWrappers = [];
+let revealBlocksProcessed = 0;
 
 export default async function decorate(block) {
   const media = document.createElement('div');
@@ -193,7 +194,8 @@ export default async function decorate(block) {
     copy.append(text);
   });
 
-  if (videoWrappers) {
+  revealBlocksProcessed++;
+  if (videoWrappers && (revealBlocksProcessed === document.querySelectorAll('.reveal.block').length)) {
     loadScript('https://players.brightcove.net/6082840763001/default_default/index.min.js', () => {
       videoWrappers.forEach((video) => {
         videoObserver.observe(video);
