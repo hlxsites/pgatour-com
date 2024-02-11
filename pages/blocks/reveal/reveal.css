@@ -9,14 +9,15 @@ main .reveal-wrapper {
 
 main .audio-container {
   position: sticky;
-  top: calc(var(--nav-height) - 20px);
+  top: var(--nav-height);
+  float: left;
+  width: 0;
   left: 30px;
   z-index: 998;
-  height: 0;
 }
 
 main .audio-button {
-  transform: translate(-20px, 70px);
+  transform: translateX(-20px);
   width: 140px;
   text-align: center;
   background-color: var(--color-black-50);
