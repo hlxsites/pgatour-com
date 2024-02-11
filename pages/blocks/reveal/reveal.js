@@ -1,30 +1,53 @@
 import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { loadScript } from '../../scripts/scripts.js';
 
 const videoObserver = new IntersectionObserver(async (entries) => {
   entries.forEach((entry) => {
     const wrapper = entry.target;
-    const video = wrapper.querySelector('video');
-    const source = video.querySelector('source');
-    const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
-    if (entry.isIntersecting) {
-      if ((isFirstVideo && entry.intersectionRatio >= 0)
-        || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
-        if (!source.hasAttribute('src')) {
-          source.src = source.dataset.src;
-          video.load();
-          video.addEventListener('loadeddata', () => {
-            video.setAttribute('data-loaded', true);
+    let videoJs = wrapper.querySelector('video-js');
+    if (videoJs) {
+      const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
+      if (entry.isIntersecting) {
+        if ((isFirstVideo && entry.intersectionRatio >= 0)
+          || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
+          videojs.getPlayer(videoJs).ready(function() {
+            var myPlayer = this;
+            // Play the video in the player
+            myPlayer.on('loadedmetadata',function(){
+              const video = videoJs.querySelector('video');
+              console.log('loaded');
+              videoJs.setAttribute('data-loaded', true);
+              video.setAttribute('data-loaded', true);
+              myPlayer.play();
+            });
           });
         }
-        video.play();
       }
     } else {
-      video.pause();
+      const video = wrapper.querySelector('video');
+      const source = video.querySelector('source');
+      const isFirstVideo = wrapper.parentElement.querySelector('.video-wrapper') === wrapper;
+      if (entry.isIntersecting) {
+        if ((isFirstVideo && entry.intersectionRatio >= 0)
+          || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
+          if (!source.hasAttribute('src')) {
+            source.src = source.dataset.src;
+            video.load();
+            video.addEventListener('loadeddata', () => {
+              video.setAttribute('data-loaded', true);
+            });
+          }
+          video.play();
+        }
+      } else {
+        video.pause();
+      }
     }
   });
 }, { threshold: [0, 0.5] });
 
 export default async function decorate(block) {
+  loadScript('https://players.brightcove.net/6082840763001/default_default/index.min.js');
   const media = document.createElement('div');
   media.classList.add('reveal-media');
   const copy = document.createElement('div');
@@ -49,11 +72,24 @@ export default async function decorate(block) {
       if (child.querySelector('a[href]') || (child.nodeName === 'A' && child.href)) {
         // transform videos
         const a = child.querySelector('a[href]') || child;
+        const brightcoveId = a.textContent.match(/^\d+$/);
         const videoWrapper = document.createElement('p');
         videoWrapper.className = 'video-wrapper';
-        videoWrapper.innerHTML = `<video loop muted playsInline>
+        if (brightcoveId) {
+          videoWrapper.innerHTML = `<video-js data-account="6082840763001"
+            data-player="default"
+            data-embed="default"
+            controls="false"
+            muted="true"
+            loop="true"
+            data-video-id="${brightcoveId}"
+            data-playlist-id=""
+            data-application-id=""></video-js>`;
+        } else {
+          videoWrapper.innerHTML = `<video loop muted playsInline>
           <source data-src="${a.href}" type="video/mp4" />
         </video>`;
+        }
         child.replaceWith(videoWrapper);
         videoObserver.observe(videoWrapper);
       } else {
