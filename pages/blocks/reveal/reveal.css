@@ -7,34 +7,6 @@ main .reveal-wrapper {
   max-width: unset;
 }
 
-main .audio-container {
-  position: sticky;
-  top: var(--nav-height);
-  float: left;
-  width: 0;
-  left: 10px;
-  z-index: 998;
-}
-
-main .audio-button {
-  text-align: center;
-  height: 40px;
-  width: 40px;
-  background-color: var(--color-black-25);
-  padding: 0;
-}
-
-main .audio-button:hover {
-  background-color: var(--color-off-white);
-}
-
-main .reveal .audio-button img {
-  text-align: center;
-  height: 20px;
-  width: 20px;
-  margin: auto;
-}
-
 main .reveal picture,
 main .reveal .video-wrapper {
   z-index: -1;
@@ -95,6 +67,36 @@ main .reveal .focus-bottom-left video {
 main .reveal .focus-bottom-right img,
 main .reveal .focus-bottom-right video {
   object-position: 80% 80%;
+}
+
+/* AUDIO */
+
+main .reveal .audio-container {
+  position: sticky;
+  top: var(--nav-height);
+  float: left;
+  width: 0;
+  left: 10px;
+  z-index: 998;
+}
+
+main .reveal .audio-button {
+  text-align: center;
+  height: 40px;
+  width: 40px;
+  background-color: var(--color-black-25);
+  padding: 0;
+}
+
+main .reveal .audio-button:hover {
+  background-color: var(--color-off-white);
+}
+
+main .reveal .audio-button img {
+  text-align: center;
+  height: 20px;
+  width: 20px;
+  margin: auto;
 }
 
 /* MEDIA */
