@@ -158,13 +158,13 @@ export default async function decorate(block) {
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
         if (audioEnabled) {
-          audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
           block.querySelectorAll('video').forEach((video) => {
             video.muted = true;
           });
           if (!matchingMedia.querySelector('video')) {
             audioButton.style.display = 'none';
           } else audioButton.style.display = 'block';
+          audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
           audioButton.onclick = () => {
             const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
             video.muted = !video.muted;
