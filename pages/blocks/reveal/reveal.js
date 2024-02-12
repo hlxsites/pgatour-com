@@ -11,7 +11,7 @@ const videoObserver = new IntersectionObserver(async (entries) => {
         if ((isFirstVideo && entry.intersectionRatio >= 0)
           || (!isFirstVideo && entry.intersectionRatio >= 0.5)) {
           // eslint-disable-next-line no-undef
-          videojs.getPlayer(bcVideo).ready(function () {
+          videojs.getPlayer(bcVideo).ready(function revealBCVideo() {
             const video = bcVideo.querySelector('video');
             bcVideo.setAttribute('data-loaded', true);
             video.setAttribute('data-loaded', true);
@@ -188,13 +188,13 @@ export default async function decorate(block) {
         } else if (!scrollDown && previousMedia) {
           previousMedia.setAttribute('data-intersecting', true);
           if (audioEnabled) {
-            if (!previousMedia.querySelector('video')) {
-              audioButton.style.display = 'none';
-            } else audioButton.style.display = 'block';
-            audioButton.innerHTML = '<img class="icon icon-mute" src="/pages/icons/volume-off.svg" alt="mute icon">';
             matchingMedia.querySelectorAll('video').forEach((video) => {
               video.muted = true;
             });
+            if (!previousMedia.querySelector('video')) {
+              audioButton.style.display = 'none';
+            } else audioButton.style.display = 'block';
+            audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
           }
         }
       }
