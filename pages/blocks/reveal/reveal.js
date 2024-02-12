@@ -194,7 +194,6 @@ export default async function decorate(block) {
             if (!previousMedia.querySelector('video')) {
               audioButton.style.display = 'none';
             } else audioButton.style.display = 'block';
-            console.log(audioContainer);
             const video = block.querySelector('div[data-intersecting="true"]').querySelector('video');
             audioButton.innerHTML = (video.muted)
               ? '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">'
