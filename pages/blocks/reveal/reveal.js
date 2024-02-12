@@ -53,6 +53,9 @@ export default async function decorate(block) {
   const rows = [...block.children];
   block.innerHTML = '';
   block.append(media, copy);
+
+  // Audio Setup
+  const audioEnabled = block.classList.contains('audio');
   const audioContainer = document.createElement('div');
   audioContainer.classList.add('audio-container');
   const audioButton = document.createElement('button');
@@ -152,23 +155,25 @@ export default async function decorate(block) {
       const mediaSlides = [...media.children];
       const matchingMedia = mediaSlides[i];
       if (observed) {
-        audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">'
-        block.querySelectorAll('video').forEach((video) => {
-          video.muted = true;
-        });
         mediaSlides.forEach((child) => child.removeAttribute('data-intersecting'));
         matchingMedia.setAttribute('data-intersecting', true);
-        if (!matchingMedia.querySelector('video')) {
-          audioButton.style.display = 'none';
-        } else audioButton.style.display = 'block';
-        audioButton.onclick = function () {
-          const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
-          video.muted = !video.muted;
-          audioButton.innerHTML = (video.muted) ?
-            '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">' :
-            '<img class="icon icon-mute" src="/pages/icons/volume-off.svg" alt="mute icon">';
-        };
-        matchingMedia.parentElement.parentElement.prepend(audioContainer);
+        if (audioEnabled) {
+          audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">'
+          block.querySelectorAll('video').forEach((video) => {
+            video.muted = true;
+          });
+          if (!matchingMedia.querySelector('video')) {
+            audioButton.style.display = 'none';
+          } else audioButton.style.display = 'block';
+          audioButton.onclick = function () {
+            const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
+            video.muted = !video.muted;
+            audioButton.innerHTML = (video.muted) ?
+              '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">' :
+              '<img class="icon icon-mute" src="/pages/icons/volume-off.svg" alt="mute icon">';
+          };
+          matchingMedia.parentElement.parentElement.prepend(audioContainer);
+        }
         // leaving the core code here in case we need to add this back
         // if (!sectionRevealLoadedTracker.includes(matchingMedia.dataset.sectionMediaId)) {
         //   sectionRevealLoadedTracker.push(matchingMedia.dataset.sectionMediaId);
@@ -182,13 +187,15 @@ export default async function decorate(block) {
           nextMedia.setAttribute('data-intersecting', true);
         } else if (!scrollDown && previousMedia) {
           previousMedia.setAttribute('data-intersecting', true);
-          if (!previousMedia.querySelector('video')) {
-            audioButton.style.display = 'none';
-          } else audioButton.style.display = 'block';
-          audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
-          matchingMedia.querySelectorAll('video').forEach((video) => {
-            video.muted = true;
-          });
+          if (audioEnabled) {
+            if (!previousMedia.querySelector('video')) {
+              audioButton.style.display = 'none';
+            } else audioButton.style.display = 'block';
+            audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
+            matchingMedia.querySelectorAll('video').forEach((video) => {
+              video.muted = true;
+            });
+          }
         }
       }
     }, { threshold: 0 });
