@@ -191,7 +191,7 @@ export default async function decorate(block) {
             if (!previousMedia.querySelector('video')) {
               audioButton.style.display = 'none';
             } else audioButton.style.display = 'block';
-            audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
+            audioButton.innerHTML = '<img class="icon icon-mute" src="/pages/icons/volume-off.svg" alt="mute icon">';
             matchingMedia.querySelectorAll('video').forEach((video) => {
               video.muted = true;
             });
