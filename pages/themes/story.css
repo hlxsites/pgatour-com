@@ -11,7 +11,7 @@
   justify-content: center;
 }
 
-.story main [data-section-status='loaded']:not(.reveal-container):not(.hero-container)::after {
+.story main [data-section-status='loaded']:not(.reveal-container):not(.hero-container):not(.video-container)::after {
   content: '';
   position: absolute;
   top: 50%;

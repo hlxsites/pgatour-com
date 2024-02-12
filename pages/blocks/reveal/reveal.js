@@ -56,7 +56,7 @@ export default async function decorate(block) {
   const audioContainer = document.createElement('div');
   audioContainer.classList.add('audio-container');
   const audioButton = document.createElement('button');
-  audioButton.innerText = 'Unmute';
+  audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">'
   audioButton.classList.add('audio-button');
   audioContainer.appendChild(audioButton);
 
@@ -152,7 +152,7 @@ export default async function decorate(block) {
       const mediaSlides = [...media.children];
       const matchingMedia = mediaSlides[i];
       if (observed) {
-        audioButton.innerText = 'Unmute';
+        audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">'
         block.querySelectorAll('video').forEach((video) => {
           video.muted = true;
         });
@@ -164,7 +164,9 @@ export default async function decorate(block) {
         audioButton.onclick = function () {
           const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
           video.muted = !video.muted;
-          audioButton.innerText = (video.muted) ? 'Unmute' : 'Mute';
+          audioButton.innerHTML = (video.muted) ?
+            '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">' :
+            '<img class="icon icon-mute" src="/pages/icons/volume-off.svg" alt="mute icon">';
         };
         matchingMedia.parentElement.parentElement.prepend(audioContainer);
         // leaving the core code here in case we need to add this back
@@ -183,7 +185,7 @@ export default async function decorate(block) {
           if (!previousMedia.querySelector('video')) {
             audioButton.style.display = 'none';
           } else audioButton.style.display = 'block';
-          audioButton.innerText = 'Unmute';
+          audioButton.innerHTML = '<img class="icon icon-unmute" src="/pages/icons/volume-on.svg" alt="unmute icon">';
           matchingMedia.querySelectorAll('video').forEach((video) => {
             video.muted = true;
           });

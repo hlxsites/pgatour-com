@@ -12,19 +12,27 @@ main .audio-container {
   top: var(--nav-height);
   float: left;
   width: 0;
-  left: 30px;
+  left: 10px;
   z-index: 998;
 }
 
 main .audio-button {
-  transform: translateX(-20px);
-  width: 140px;
   text-align: center;
-  background-color: var(--color-black-50);
+  height: 40px;
+  width: 40px;
+  background-color: var(--color-black-25);
+  padding: 0;
 }
 
 main .audio-button:hover {
-  background-color: var(--color-black);
+  background-color: var(--color-off-white);
+}
+
+main .reveal .audio-button img {
+  text-align: center;
+  height: 20px;
+  width: 20px;
+  margin: auto;
 }
 
 main .reveal picture,
