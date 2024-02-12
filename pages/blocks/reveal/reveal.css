@@ -70,7 +70,6 @@ main .reveal .focus-bottom-right video {
 }
 
 /* AUDIO */
-
 main .reveal .audio-container {
   position: sticky;
   top: var(--nav-height);
