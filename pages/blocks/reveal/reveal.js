@@ -165,7 +165,7 @@ export default async function decorate(block) {
           if (!matchingMedia.querySelector('video')) {
             audioButton.style.display = 'none';
           } else audioButton.style.display = 'block';
-          audioButton.onclick = function () {
+          audioButton.onclick = () => {
             const video = audioContainer.parentElement.querySelector('div[data-intersecting="true"]').querySelector('video');
             video.muted = !video.muted;
             audioButton.innerHTML = (video.muted)
