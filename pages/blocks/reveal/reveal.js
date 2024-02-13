@@ -1,5 +1,5 @@
 import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { loadScript } from '../../scripts/scripts.js';
+import { loadScript, videoIsPlaying } from '../../scripts/scripts.js';
 
 const videoObserver = new IntersectionObserver(async (entries) => {
   entries.forEach((entry) => {
@@ -33,10 +33,14 @@ const videoObserver = new IntersectionObserver(async (entries) => {
               video.setAttribute('data-loaded', true);
             });
           }
-          video.play();
+          if (!videoIsPlaying(video)) {
+            video.play();
+          }
         }
       } else {
-        video.pause();
+        if (videoIsPlaying(video)) {
+          video.pause();
+        }
       }
     }
   });

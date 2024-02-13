@@ -262,6 +262,11 @@ function convertDivsToUlLi(containerElement) {
   }
 }
 
+export function videoIsPlaying(video) {
+  video.currentTime > 0 && !video.paused && !video.ended
+  && video.readyState > video.HAVE_CURRENT_DATA;
+}
+
 /**
  * load the header and footer content from pgatour.com
  * @param {*} header the header element
