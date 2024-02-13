@@ -37,10 +37,8 @@ const videoObserver = new IntersectionObserver(async (entries) => {
             video.play();
           }
         }
-      } else {
-        if (videoIsPlaying(video)) {
+      } else if (videoIsPlaying(video)) {
           video.pause();
-        }
       }
     }
   });
