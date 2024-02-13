@@ -262,7 +262,7 @@ function convertDivsToUlLi(containerElement) {
   }
 }
 
-export function videoIsPlaying(video) {
+export function isVideoPlaying(video) {
   return video.currentTime > 0 && !video.paused && !video.ended
   && video.readyState > video.HAVE_CURRENT_DATA;
 }
