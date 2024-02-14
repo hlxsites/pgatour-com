@@ -199,6 +199,15 @@ function getPageName(sectionName) {
   return pageSectionParts.filter((subPath) => subPath !== '').join(':');
 }
 
+/*
+ * Sanitizes a name for use as a js property name.
+ * @param {string} name The unsanitized name
+ * @returns {string} The camelCased name
+ */
+export function toCamelCase(name) {
+  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
 export async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
   const loaded = window.placeholders[`${prefix}-loaded`];
