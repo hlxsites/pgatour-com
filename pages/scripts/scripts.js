@@ -199,28 +199,14 @@ function getPageName(sectionName) {
   return pageSectionParts.filter((subPath) => subPath !== '').join(':');
 }
 
-export function clearDataLayer() {
-  window.adobeDataLayer = [];
-}
-
-export function pushOneTrustConsentGroups() {
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  const dl = window.adobeDataLayer;
-  dl.push({
-    event: 'LaunchOTLoaded',
-    // eslint-disable-next-line no-undef
-    OnetrustActiveGroups: typeof OnetrustActiveGroups !== 'undefined' ? OnetrustActiveGroups : '',
-  });
-}
-
 export function sendAnalyticsPageEvent(sectionName) {
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  const dl = window.adobeDataLayer;
+  window.dataLayer = window.dataLayer || [];
+  const dl = window.dataLayer;
   const tournamentID = getMetadata('tournamentID');
   const isUserLoggedIn = window.gigyaAccountInfo && window.gigyaAccountInfo != null
     && window.gigyaAccountInfo.errorCode === 0;
   dl.push({
-    event: 'pageLoaded',
+    event: 'pageload',
     pageName: getPageName(sectionName),
     pageUrl: window.location.href,
     siteSection: 'pages',
@@ -228,7 +214,7 @@ export function sendAnalyticsPageEvent(sectionName) {
     siteSubSection2: '',
     gigyaID: isUserLoggedIn && window.gigyaAccountInfo.UID ? window.gigyaAccountInfo.UID : '',
     userLoggedIn: isUserLoggedIn ? 'Logged In' : 'Logged Out',
-    tourName: 'pgatour',
+    tourName: placeholders.tourName.toLowerCase().replaceAll(' ', '_'),
     tournamentID,
     ipAddress: '127.0.0.1',
     deviceType: 'Web',
