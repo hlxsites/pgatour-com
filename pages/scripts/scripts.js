@@ -14,6 +14,7 @@ import {
   loadCSS,
   getMetadata,
   toClassName,
+  fetchPlaceholders,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['carousel', 'hero']; // add your LCP blocks to the list
@@ -197,42 +198,6 @@ function getPageName(sectionName) {
     pageSectionParts.push(sectionName);
   }
   return pageSectionParts.filter((subPath) => subPath !== '').join(':');
-}
-
-/*
- * Sanitizes a name for use as a js property name.
- * @param {string} name The unsanitized name
- * @returns {string} The camelCased name
- */
-export function toCamelCase(name) {
-  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
-
-export async function fetchPlaceholders(prefix = 'default') {
-  window.placeholders = window.placeholders || {};
-  const loaded = window.placeholders[`${prefix}-loaded`];
-  if (!loaded) {
-    window.placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
-      try {
-        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
-          .then((resp) => resp.json())
-          .then((json) => {
-            const placeholders = {};
-            json.data.forEach((placeholder) => {
-              placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
-            });
-            window.placeholders[prefix] = placeholders;
-            resolve();
-          });
-      } catch (e) {
-        // error loading placeholders
-        window.placeholders[prefix] = {};
-        reject();
-      }
-    });
-  }
-  await window.placeholders[`${prefix}-loaded`];
-  return (window.placeholders[prefix]);
 }
 
 export async function sendAnalyticsPageEvent(sectionName) {
