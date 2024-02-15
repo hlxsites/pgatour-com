@@ -200,29 +200,6 @@ function getPageName(sectionName) {
   return pageSectionParts.filter((subPath) => subPath !== '').join(':');
 }
 
-export async function sendAnalyticsPageEvent(sectionName) {
-  window.dataLayer = window.dataLayer || [];
-  const dl = window.dataLayer;
-  const placeholders = await fetchPlaceholders();
-  const tournamentID = getMetadata('tournamentID');
-  const isUserLoggedIn = window.gigyaAccountInfo && window.gigyaAccountInfo != null
-    && window.gigyaAccountInfo.errorCode === 0;
-  dl.push({
-    event: 'pageload',
-    pageName: getPageName(sectionName),
-    pageUrl: window.location.href,
-    siteSection: 'pages',
-    siteSubSection: '',
-    siteSubSection2: '',
-    gigyaID: isUserLoggedIn && window.gigyaAccountInfo.UID ? window.gigyaAccountInfo.UID : '',
-    userLoggedIn: isUserLoggedIn ? 'Logged In' : 'Logged Out',
-    tourName: placeholders.tourName?.toLowerCase().replaceAll(' ', '_'),
-    tournamentID,
-    ipAddress: '127.0.0.1',
-    deviceType: 'Web',
-  });
-}
-
 function convertDivsToUlLi(containerElement) {
   const quickLinksContainer = containerElement.querySelector('.css-rklm6r > .css-tb1hh0');
 

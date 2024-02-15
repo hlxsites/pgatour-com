@@ -2,7 +2,6 @@ import { sampleRUM, fetchPlaceholders, getMetadata } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import {
   loadScript,
-  sendAnalyticsPageEvent,
 } from './scripts.js';
 
 const placeholders = await fetchPlaceholders();
@@ -79,9 +78,9 @@ async function OptanonWrapper() {
     /* eslint-enable */
   };
   if (!localStorage.getItem('OptIn_PreviousPermissions')) {
-    const adobeSettings = OneTrustActiveGroup();
-    adobeSettings.tempImplied = true;
-    localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(adobeSettings));
+    const settings = OneTrustActiveGroup();
+    settings.tempImplied = true;
+    localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(settings));
   }
 
   loadScript('https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IscKmAoYcuwP8zpTnatC3hXBUm8rPuI-Hg_cZJ-jL-M7LgqCkxmwe-ps1Qy7PoWd', () => {
@@ -89,30 +88,9 @@ async function OptanonWrapper() {
     gigya.accounts.getAccountInfo({
       callback: (response) => {
         window.gigyaAccountInfo = response;
-        sendAnalyticsPageEvent();
-
-        // wire up section analytics for stories
-        if (document.body.classList.contains('story')) {
-          document.querySelector('main').querySelectorAll('.section').forEach((section, i) => {
-            const isBlockQuote = section.classList.contains('blockquote-container');
-            // skip the first section and any block quote sections from analytics
-            // we only care about the reveal blocks, and the last section (credits)
-            if (i > 0 && !isBlockQuote) {
-              const sectionObserver = new IntersectionObserver(async (entries) => {
-                if (entries.some((entry) => entry.isIntersecting)) {
-                  sectionObserver.disconnect();
-                  sendAnalyticsPageEvent(section.dataset.sectionId);
-                }
-              }, { threshold: 0 });
-              sectionObserver.observe(section);
-            }
-          });
-        }
       },
     });
   });
-
-  sendAnalyticsPageEvent();
 }
 
 const otId = placeholders.onetrustId;
