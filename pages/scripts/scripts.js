@@ -14,7 +14,6 @@ import {
   loadCSS,
   getMetadata,
   toClassName,
-  fetchPlaceholders,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['carousel', 'hero']; // add your LCP blocks to the list
@@ -190,14 +189,6 @@ export function getPgaTourDomain() {
   const pgaTourStagingUrl = 'https://pgatour-uat.dev.pgatourstaging.com';
 
   return isProd ? pgaTourProdUrl : pgaTourStagingUrl;
-}
-
-function getPageName(sectionName) {
-  const pageSectionParts = window.location.pathname.split('/');
-  if (sectionName) {
-    pageSectionParts.push(sectionName);
-  }
-  return pageSectionParts.filter((subPath) => subPath !== '').join(':');
 }
 
 function convertDivsToUlLi(containerElement) {
