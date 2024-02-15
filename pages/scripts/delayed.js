@@ -82,15 +82,6 @@ async function OptanonWrapper() {
     settings.tempImplied = true;
     localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(settings));
   }
-
-  loadScript('https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IscKmAoYcuwP8zpTnatC3hXBUm8rPuI-Hg_cZJ-jL-M7LgqCkxmwe-ps1Qy7PoWd', () => {
-    // eslint-disable-next-line no-undef
-    gigya.accounts.getAccountInfo({
-      callback: (response) => {
-        window.gigyaAccountInfo = response;
-      },
-    });
-  });
 }
 
 const otId = placeholders.onetrustId;
