@@ -2,9 +2,6 @@ import { sampleRUM, fetchPlaceholders, getMetadata } from './lib-franklin.js';
 // eslint-disable-next-line import/no-cycle
 import {
   loadScript,
-  sendAnalyticsPageEvent,
-  clearDataLayer,
-  pushOneTrustConsentGroups,
 } from './scripts.js';
 
 const placeholders = await fetchPlaceholders();
@@ -81,51 +78,34 @@ async function OptanonWrapper() {
     /* eslint-enable */
   };
   if (!localStorage.getItem('OptIn_PreviousPermissions')) {
-    const adobeSettings = OneTrustActiveGroup();
-    adobeSettings.tempImplied = true;
-    localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(adobeSettings));
+    const settings = OneTrustActiveGroup();
+    settings.tempImplied = true;
+    localStorage.setItem('OptIn_PreviousPermissions', JSON.stringify(settings));
   }
-
-  clearDataLayer();
-  loadScript(`https://assets.adobedtm.com/d17bac9530d5/a14f7717d75d/launch-aa66aad171be${isProd ? '.min' : ''}.js`, () => {
-    pushOneTrustConsentGroups();
-
-    loadScript('https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IscKmAoYcuwP8zpTnatC3hXBUm8rPuI-Hg_cZJ-jL-M7LgqCkxmwe-ps1Qy7PoWd', () => {
-      // eslint-disable-next-line no-undef
-      gigya.accounts.getAccountInfo({
-        callback: (response) => {
-          window.gigyaAccountInfo = response;
-          sendAnalyticsPageEvent();
-
-          // wire up section analytics for stories
-          if (document.body.classList.contains('story')) {
-            document.querySelector('main').querySelectorAll('.section').forEach((section, i) => {
-              const isBlockQuote = section.classList.contains('blockquote-container');
-              // skip the first section and any block quote sections from analytics
-              // we only care about the reveal blocks, and the last section (credits)
-              if (i > 0 && !isBlockQuote) {
-                const sectionObserver = new IntersectionObserver(async (entries) => {
-                  if (entries.some((entry) => entry.isIntersecting)) {
-                    sectionObserver.disconnect();
-                    sendAnalyticsPageEvent(section.dataset.sectionId);
-                  }
-                }, { threshold: 0 });
-                sectionObserver.observe(section);
-              }
-            });
-          }
-        },
-      });
-    });
-  });
 }
 
 const otId = placeholders.onetrustId;
 if (otId) {
   const cookieScript = loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js');
   cookieScript.setAttribute('data-domain-script', `${otId}${isProd ? '' : '-test'}`);
-  cookieScript.setAttribute('data-dlayer-name', 'adobeDataLayer');
+  cookieScript.setAttribute('data-dlayer-name', 'dataLayer');
   cookieScript.setAttribute('data-nscript', 'beforeInteractive');
+
+  const gtmId = placeholders.googletagmanagerId;
+  if (gtmId) {
+    const GTMScript = document.createElement('script');
+    GTMScript.innerHTML = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','${gtmId}');`;
+    document.head.append(GTMScript);
+
+    const GTMFrame = document.createElement('no-script');
+    GTMFrame.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+    document.body.prepend(GTMFrame);
+  }
 
   window.OptanonWrapper = OptanonWrapper;
 
