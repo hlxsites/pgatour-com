@@ -356,3 +356,52 @@ async function loadPage() {
 if (!window.inTest) {
   loadPage();
 }
+
+async function getJsonStyles() {
+  let styles;
+  const promise = new Promise((resolve, reject) => {
+    try {
+      fetch('/styles.json')
+        .then((resp) => resp.json())
+        .then((json) => {
+          styles = json.data;
+          resolve();
+        });
+    } catch (error) {
+      reject();
+    }
+  });
+  await promise;
+  return styles;
+}
+
+export async function applyAuthorStyles(block, containerToApply) {
+  const styles = await getJsonStyles();
+  const getAuthorStyle = block.className.split(' ').filter((string) => string.includes('-'));
+  const isStyledByAuthor = getAuthorStyle.length >= 1 ? getAuthorStyle[0].split('-') : null;
+
+  // needs to be two, area-variant.
+  if (isStyledByAuthor && isStyledByAuthor.length === 2) {
+    const authorArea = isStyledByAuthor[0];
+    const authorVariant = isStyledByAuthor[1];
+    // checking for variant and area makes the match unique.
+    // eslint-disable-next-line max-len
+    const matchingStyleFromPool = styles.find((style) => style.Variant === authorVariant && style.Area === authorArea);
+
+    if (matchingStyleFromPool) {
+      const { Hex, Area } = matchingStyleFromPool;
+      let inlineStyle;
+      if (Area === 'text') {
+        inlineStyle = `color:${Hex};`;
+      } else if (Area === 'background') {
+        inlineStyle = `background-color:${Hex};`;
+      }
+
+      if (inlineStyle) {
+        containerToApply.querySelectorAll('p').forEach((element) => {
+          element.setAttribute('style', inlineStyle);
+        });
+      }
+    }
+  }
+}

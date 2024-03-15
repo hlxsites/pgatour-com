@@ -1,5 +1,5 @@
 import { toClassName, createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { loadScript, isVideoPlaying } from '../../scripts/scripts.js';
+import { loadScript, isVideoPlaying, applyAuthorStyles } from '../../scripts/scripts.js';
 
 const videoObserver = new IntersectionObserver(async (entries) => {
   entries.forEach((entry) => {
@@ -207,6 +207,8 @@ export default async function decorate(block) {
     textObserver.observe(text);
     copy.append(text);
   });
+
+  await applyAuthorStyles(block, copy);
 
   revealBlocksProcessed += 1;
   if (videoWrappers && (revealBlocksProcessed === document.querySelectorAll('.reveal.block').length)) {
