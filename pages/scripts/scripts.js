@@ -376,32 +376,32 @@ async function getJsonStyles() {
 }
 
 export async function applyAuthorStyles(block, containerToApply) {
-  const styles = await getJsonStyles();
+  const excelStyles = await getJsonStyles();
   const getAuthorStyle = block.className.split(' ').filter((string) => string.includes('-'));
-  const isStyledByAuthor = getAuthorStyle.length >= 1 ? getAuthorStyle[0].split('-') : null;
 
-  // needs to be two, area-variant.
-  if (isStyledByAuthor && isStyledByAuthor.length === 2) {
-    const authorArea = isStyledByAuthor[0];
-    const authorVariant = isStyledByAuthor[1];
-    // checking for variant and area makes the match unique.
-    // eslint-disable-next-line max-len
-    const matchingStyleFromPool = styles.find((style) => style.Variant === authorVariant && style.Area === authorArea);
-
-    if (matchingStyleFromPool) {
-      const { Hex, Area } = matchingStyleFromPool;
-      let inlineStyle;
-      if (Area === 'text') {
-        inlineStyle = `color:${Hex};`;
-      } else if (Area === 'background') {
-        inlineStyle = `background-color:${Hex};`;
+  if (getAuthorStyle && getAuthorStyle.length >= 1) {
+    const styles = getAuthorStyle.map((style) => {
+      const split = style.split('-');
+      // needs to be two, area-variant.
+      if (split.length === 2) {
+        const area = split[0];
+        const variant = split[1];
+        // eslint-disable-next-line max-len
+        const matchingStyleFromExcel = excelStyles.find((excel) => excel.Variant === variant && excel.Area === area);
+        if (matchingStyleFromExcel) {
+          const { Hex, Area } = matchingStyleFromExcel;
+          if (Area === 'text') {
+            return `color:${Hex};`;
+          }
+          return `${split[0]}:${Hex}`;
+        }
       }
-
-      if (inlineStyle) {
-        containerToApply.querySelectorAll('p').forEach((element) => {
-          element.setAttribute('style', inlineStyle);
-        });
-      }
+      return '';
+    });
+    if (containerToApply && styles.length) {
+      containerToApply.querySelectorAll('p').forEach((element) => {
+        element.setAttribute('style', styles.join(';'));
+      });
     }
   }
 }
