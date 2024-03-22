@@ -356,3 +356,52 @@ async function loadPage() {
 if (!window.inTest) {
   loadPage();
 }
+
+async function getJsonStyles() {
+  let styles;
+  const promise = new Promise((resolve, reject) => {
+    try {
+      fetch('/styles.json')
+        .then((resp) => resp.json())
+        .then((json) => {
+          styles = json.data;
+          resolve();
+        });
+    } catch (error) {
+      reject();
+    }
+  });
+  await promise;
+  return styles;
+}
+
+export async function applyAuthorStyles(block, containerToApply) {
+  const excelStyles = await getJsonStyles();
+  const getAuthorStyle = block.className.split(' ').filter((string) => string.includes('-'));
+
+  if (getAuthorStyle && getAuthorStyle.length >= 1) {
+    const styles = getAuthorStyle.map((style) => {
+      const split = style.split('-');
+      // needs to be two, area-variant.
+      if (split.length === 2) {
+        const area = split[0];
+        const variant = split[1];
+        // eslint-disable-next-line max-len
+        const matchingStyleFromExcel = excelStyles.find((excel) => excel.Variant === variant && excel.Area === area);
+        if (matchingStyleFromExcel) {
+          const { Hex, Area } = matchingStyleFromExcel;
+          if (Area === 'text') {
+            return `color:${Hex};`;
+          }
+          return `${split[0]}:${Hex}`;
+        }
+      }
+      return '';
+    });
+    if (containerToApply && styles.length) {
+      containerToApply.querySelectorAll('p').forEach((element) => {
+        element.setAttribute('style', styles.join(';'));
+      });
+    }
+  }
+}
