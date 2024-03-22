@@ -361,8 +361,14 @@ async function getJsonStyles() {
   let styles;
   const promise = new Promise((resolve, reject) => {
     try {
-      fetch('/styles.json')
-        .then((resp) => resp.json())
+      fetch('/pages/styles.json')
+        .then((resp) => {
+          if (resp.status !== 404) {
+            return resp.json();
+          }
+          reject();
+          return null;
+        })
         .then((json) => {
           styles = json.data;
           resolve();
@@ -378,8 +384,7 @@ async function getJsonStyles() {
 export async function applyAuthorStyles(block, containerToApply) {
   const excelStyles = await getJsonStyles();
   const getAuthorStyle = block.className.split(' ').filter((string) => string.includes('-'));
-
-  if (getAuthorStyle && getAuthorStyle.length >= 1) {
+  if (excelStyles && getAuthorStyle && getAuthorStyle.length >= 1) {
     const styles = getAuthorStyle.map((style) => {
       const split = style.split('-');
       // needs to be two, area-variant.
