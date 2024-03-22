@@ -361,7 +361,7 @@ async function getJsonStyles() {
   let styles;
   const promise = new Promise((resolve, reject) => {
     try {
-      fetch('/styles.json')
+      fetch('/pages/styles.json')
         .then((resp) => resp.json())
         .then((json) => {
           styles = json.data;
