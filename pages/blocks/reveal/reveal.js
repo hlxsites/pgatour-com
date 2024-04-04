@@ -148,7 +148,7 @@ export default async function decorate(block) {
     media.append(img);
 
     // copy/text setup
-    if (!text.children.length) {
+    if (!text.children.length && text.innerHTML.length > 0) {
       text.innerHTML = `<p>${text.innerHTML}</p>`;
     }
 
